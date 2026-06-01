@@ -1,0 +1,777 @@
+model,name,description,model,perplexity,rouge1,rouge2,rougeL,bert_precision,bert_recall,bert_f1,rts_reasoning_sample,geval_treatment_completeness,bias_detected,rts_score,geval_diagnostic_accuracy,gemba_score,bias_score,geval_mean,geval_clinical_coherence,geval_clinical_relevance,geval_patient_safety,clinical_msk_score,mean_latency_ms,p50_latency_ms,p95_latency_ms
+llama_3b_1b,A0_teacher_baseline,Fine-tuned teacher only — no distillation or refinement,A0_teacher_baseline,16.81653507,0.174547701,0.038145065,0.092057166,0.759343326,0.730216205,0.74436909,"# Expert MSK Physiotherapy Evaluation
+
+## Case Study: ""The 45-Year-Old Runner"" – Achilles Tendon
+
+---
+
+## Dimension 1: CLINICAL REASONING
+
+### Strengths
+- The link between running history, mechanical loading (uphill running, jumping, landing) and posterior ankle pain is **directionally appropriate**
+- Age (45), male sex, hypertension, and diabetes are correctly identified as risk-modifying factors — fluoroquinolone use, metabolic syndrome, and microvascular changes in diabetes are well-documented contributors to tendinopathy
+
+### Weaknesses
+- **Diagnostic terminology is outdated**: ""Achilles t",0.12,0,0.14,0.16,0.398,0,0.252,0.34,0.4,0.24,0.3486,1222.421889,1220.461361,1228.674029
+llama_3b_1b,A1_distill_only,Distillation only — no Phase 3 refinement,A1_distill_only,17.29510995,0.143834557,0.029292525,0.077948031,0.743529677,0.701623619,0.721699715,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendonitis Case Analysis
+
+---
+
+## 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Strengths:**
+- The mechanism is plausible: a beginner runner (despite 5 years, described as ""weekend athlete"") with a 6-week gradual onset of calf/heel pain is consistent with an overuse Achilles tendinopathy pattern
+- Identifying repetitive stress, poor foot mechanics, and sudden activity increases as causative factors is clinically appropriate
+
+**Weaknesses:**
+- The diagnosis defaults to ""tendonitis"" without distinguishing between **inser",0.06,0,0.46,0.06,0.244,0,0.116,0.12,0.22,0.12,0.3341,714.5211686,713.5246029,717.8369499
+llama_3b_1b,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,19.04476441,0.187789646,0.041439694,0.104314684,0.784588277,0.719691813,0.750537217,"# Clinical Case Study Evaluation: Mr. Raj – Achilles Tendinosis
+
+---
+
+## 1. CLINICAL REASONING – Presentation → Diagnosis
+
+**Analysis:**
+
+The clinical reasoning chain is **weak and poorly constructed**. Several significant concerns exist:
+
+- The diagnosis of ""mild tendinosis of the distal Achilles tendon"" appears without adequate justification. Achilles tendinosis typically presents at the **mid-portion** (2-6cm proximal to insertion); distal/insertional tendinopathy is a distinct entity requiring different management
+- **No clear mechanism of injury or onset history** is provided — was this a",0.06,0,0.08,0.08,0.22,0,0.132,0.12,0.2,0.2,0.2645,638.2625126,638.0076546,641.2104741
+llama_3b_1b,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,12.31413725,0.182970983,0.038298467,0.10297116,0.780950069,0.720962346,0.749549389,"# MSK Physiotherapy Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Major Deficiencies:**
+- The case describes an ""Achilles tendon rupture"" but provides **no diagnostic reasoning pathway** — no mechanism of injury is described (e.g., sudden push-off, eccentric load, audible ""pop"")
+- The anatomical description is **clinically inaccurate**: Achilles tendon ruptures characteristically occur **2-6cm proximal to the calcaneal insertion**, not ""at the junction between the tendon and the bone"" — that would describe an avulsion
+- ",0.08,0,0.26,0.08,0.246,0,0.14,0.14,0.24,0.16,0.3087,639.7920133,639.6307138,641.1366725
+llama_3b_1b,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,13.31395177,0.17042843,0.037617975,0.095551067,0.780062437,0.708354115,0.742342591,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case Study Analysis
+
+---
+
+## 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+### Strengths:
+- Basic demographic information provided (29-year-old female)
+- Running history noted as a relevant predisposing factor
+- Repetitive ankle sprain history acknowledged
+
+### Critical Weaknesses:
+- **""Grade 3 Achilles tendon injury""** is poorly classified — Achilles tendon pathology is typically classified as tendinopathy (insertional vs. mid-portion), partial tear, or complete rupture, **not** graded 1-3 in standard clinical pr",0.06,0,0.08,0.04,0.214,0,0.088,0.1,0.16,0.08,0.2495,637.210887,637.0491985,638.2921111
+llama_3b_1b,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,13.30579431,0.182031315,0.043413036,0.103624969,0.782066643,0.71701479,0.747995377,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Major deficiencies identified:**
+- The case incorrectly references **""RICE criteria""** for grading — RICE (Rest, Ice, Compression, Elevation) is a **management protocol**, not a grading/classification system. Achilles tendon injuries are typically graded using the **Blazina classification**, **VISA-A scale**, or described by rupture severity (partial vs. complete)
+- No mechanism of injury detail beyond ""working out on a treadmill"" — was there an a",0.06,0,0.16,0.06,0.188,0,0.088,0.08,0.14,0.1,0.261,638.4068007,638.3002994,640.0462278
+llama_3b_1b,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,13.84085271,0.171825857,0.040299343,0.095554904,0.780461788,0.715290904,0.746149957,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Major deficiencies identified:**
+
+- The case presents classic Achilles tendinopathy features (heel pain, post-activity pain, swelling) but **no formal diagnosis is reached**
+- The inclusion of **numbness and tingling in the toes** is a significant neurological red flag that is completely unexplored — this could indicate tarsal tunnel syndrome, L5/S1 radiculopathy (linked to noted LBP history), or vascular compromise
+- The **use of crutches** sugge",0.06,0,0.08,0.04,0.188,0,0.076,0.1,0.12,0.06,0.2408,650.5537794,648.4084566,673.6828223
+llama_tiny,A0_teacher_baseline,Fine-tuned teacher only — no distillation or refinement,A0_teacher_baseline,10760.9835,0.185939551,0.043013174,0.09725267,0.774241567,0.736050963,0.7545892,"# MSK Physiotherapy Clinical Case Evaluation: Achilles Tendon Inflammation
+
+---
+
+## 1. CLINICAL REASONING
+
+### Strengths
+- The mechanism of injury is plausible: repetitive heavy loading over 3 months with gradual symptom escalation is consistent with **tendinopathy/tendinitis** progression
+- Palpation pain and swelling over the Achilles tendon are appropriate cardinal signs
+- Ultrasound finding of a **hypoechoic area** at the tendon junction is consistent with tendinopathic changes or partial tearing
+
+### Weaknesses
+- **Diagnostic inconsistency**: The working diagnosis is ""Achilles Tendon Infl",0.28,0.16,0.24,0.26,0,0.364,0,0.14,0.1,0.4,0.3396,1445.579187,1443.805277,1453.369155
+llama_tiny,A1_distill_only,Distillation only — no Phase 3 refinement,A1_distill_only,30.40168968,0.142034538,0.026822417,0.076319304,0.769286096,0.713953614,0.740532219,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Strengths:**
+- The mechanism of injury (Achilles tendon rupture) is consistent with the patient's history of prior Achilles tears, plantar fasciitis, and stress fractures, which are recognized risk factors
+- Pain localized to the right heel radiating up the posterior leg is anatomically consistent with Achilles tendon pathology
+- Ultrasound confirmation of the tear adds objective diagnostic validity
+
+**Weaknesses:**
+- **Critical anatomical i",0.22,0.14,0.196,0.16,0,0.352,0,0.26,0.14,0.32,0.3447,976.3941701,974.0157624,990.2581707
+llama_tiny,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,85.71284845,0.148975481,0.032248534,0.080670853,0.783886015,0.715866923,0.748140335,"# MSK Physiotherapy Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING
+**Assessment: Very Poor**
+
+The clinical reasoning is fundamentally flawed and internally inconsistent:
+- The patient is introduced as a **35-year-old male**, yet throughout the outcomes and physical findings sections, the patient is referred to as **""she/her""** — a basic demographic contradiction that undermines credibility
+- The physical findings describe pain ""on the inside of her..."" — the sentence is **incomplete**, leaving the anatomical finding unresolved
+- Achilles tendon pathol",0.12,0.06,0.116,0.1,0,0.216,0,0.1,0.06,0.24,0.2607,902.35429,901.3854901,907.1835748
+llama_tiny,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,9.906145924,0.174076878,0.042411002,0.095531243,0.787840366,0.722758651,0.753786087,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case Study Analysis
+
+---
+
+## 1. CLINICAL REASONING – Presentation → Diagnosis
+
+**Analysis:**
+The case study demonstrates **severely deficient clinical reasoning**. There are multiple glaring errors and omissions:
+
+- The case describes Achilles tendon as ""the **muscle** that connects the lower leg to the heel bone"" — this is **anatomically incorrect**; the Achilles tendon is a **tendon**, not a muscle
+- The terms ""Achilles tendonitis"" and ""degenerative condition"" are used interchangeably without differentiation — clinically,",0.12,0.1,0.136,0.16,0,0.236,0,0.2,0.06,0.24,0.2933,889.4497563,887.7265749,896.5967958
+llama_tiny,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,21.28849698,0.146880478,0.032027544,0.080052444,0.776430726,0.70822084,0.740522861,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case Analysis
+
+---
+
+## 1. CLINICAL REASONING
+
+**Assessment: Poor**
+
+The clinical reasoning presented contains several significant deficiencies:
+
+- The **Beck Manning Assessment Questionnaire (BMAQ)** is **not a recognised, validated outcome measure** for Achilles tendon pathology. Standard validated tools include the **VISA-A (Victorian Institute of Sport Assessment - Achilles)**, the **FAAM (Foot and Ankle Ability Measure)**, or the **ATRS (Achilles Tendon Total Rupture Score)**. This undermines the credibility of the enti",0.1,0.06,0.12,0.12,0,0.212,0,0.1,0.08,0.24,0.2591,890.2365848,889.52579,894.5715319
+llama_tiny,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,28.01286785,0.156843625,0.036159613,0.086143784,0.788045049,0.720462382,0.752647758,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Analysis:**
+The case study contains **significant anatomical inaccuracies** that undermine clinical credibility:
+- The Achilles tendon connects the calcaneus to the **gastrocnemius/soleus complex (calf muscles)**, NOT to the tibia
+- The description of the tendon being ""covered by a sheath lined with smooth muscle"" is anatomically incorrect — it is a **paratenon**, not smooth muscle
+- No differential diagnosis is attempted
+- No clear clinical",0.08,0.06,0.1,0.1,0.4,0.196,0.4,0.1,0.04,0.22,0.2025,892.69651,892.462244,897.8225951
+llama_tiny,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,28.18267882,0.163279408,0.035454827,0.092166602,0.787640095,0.720398545,0.752473414,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Condition: Achilles Tendon Pain – 25-year-old Female
+
+---
+
+## Dimension-by-Dimension Analysis
+
+### 1. CLINICAL REASONING
+**Assessment: Very Poor (1/10)**
+
+The case study demonstrates significant fundamental flaws in clinical reasoning:
+
+- **Repetitive and circular content**: The history of right ankle sprain is stated **four times verbatim**, indicating copy-paste errors and a lack of structured clinical thinking
+- **Incomplete narrative**: The case literally ends mid-sentence (""She had a history of right ankle sprain"") suggesting an unfin",0.1,0.06,0.104,0.14,0,0.204,0,0.1,0.04,0.18,0.2567,892.133645,891.116056,897.2849544
+qwen_3b_0.5b,A0_teacher_baseline,Fine-tuned teacher only — no distillation or refinement,A0_teacher_baseline,13.67319031,0.17739353,0.03288271,0.084681992,0.764455199,0.726037323,0.744621158,"# MSK Physiotherapy Clinical Case Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Strengths:**
+- The clinical presentation is coherent and consistent: 45-year-old female, chronic history, failed RICE/NSAIDs, pain with prolonged loading activities (standing, walking), reduced jump/run capacity
+- Physical findings (tendon tenderness, palpable thickening, reduced dorsiflexion ROM) align well with established Achilles tendinopathy diagnostic criteria
+- Imaging correlation (MRI high signal intensity, ultrasound confirmation) appropr",0.3,0.2,0.276,0.28,0,0.472,0,0.1,0.1,0.5,0.3644,1873.816673,1873.008037,1877.261731
+qwen_3b_0.5b,A1_distill_only,Distillation only — no Phase 3 refinement,A1_distill_only,16.83126401,0.176195048,0.030817516,0.083157763,0.761912942,0.723193467,0.74197787,"# MSK Physiotherapy Clinical Case Evaluation: Achilles Tendon
+
+---
+
+## 1. CLINICAL REASONING
+
+**Presentation → Diagnosis Analysis:**
+
+The case presents several **logical inconsistencies and contradictions**:
+
+- The patient is described as both a ""retired professional basketball player"" **and** someone ""injured in a collision with another player in a car accident"" — these are contradictory contexts that are never reconciled
+- The mechanism shifts from a **mild calf strain** → progressive Achilles tendinopathy, which is plausible, but the causal chain is poorly established
+- Left leg fractures r",0.16,0.1,0.156,0.18,0,0.234,0,0.24,0.08,0.26,0.3022,1064.344097,1064.11468,1066.289471
+qwen_3b_0.5b,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,80.89054923,0.187436514,0.037162883,0.086592699,0.767260075,0.723167658,0.744495153,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Multiple significant errors identified:**
+
+- **Anatomical inaccuracy**: Achilles tendinitis is described as occurring on the **anterior surface** of the Achilles tendon. This is factually incorrect — Achilles tendinopathy typically affects the **posterior** tendon, with insertional tendinopathy at the **posterior** calcaneal attachment.
+- **Inconsistent laterality**: The chronic pain is described as right foot, yet the chronic ankle sprain h",0.206,0.04,0.1,0,0.12,0.092,0.12,0,0.04,0.14,0.2521,962.4679677,961.3314625,967.2689979
+qwen_3b_0.5b,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,23.35471885,0.182984194,0.033088337,0.084088636,0.766565144,0.722650409,0.743883431,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Strengths:**
+- The presentation of chronic Achilles pain with activity-related exacerbation, stiffness, and difficulty with full plantarflexion/dorsiflexion is broadly consistent with Achilles tendinopathy
+- Duration (6 years) and mechanism (overuse from gym/recreational activity) are plausible etiological factors
+- Gastrocnemius tightness as a contributing factor is clinically relevant
+
+**Weaknesses:**
+- **Critical terminological error:** T",0.284,0.1,0.14,0,0.22,0.16,0.14,0,0.12,0.22,0.2962,975.5394595,964.0106845,1013.085087
+qwen_3b_0.5b,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,18.59534408,0.187494343,0.034325305,0.085193947,0.766966879,0.722039282,0.743753016,"# MSK Physiotherapy Clinical Case Analysis: Achilles Tendon
+
+---
+
+## Preliminary Observations
+
+Before proceeding with dimensional analysis, several **critical inconsistencies** within the case study itself must be flagged:
+
+- Patient is described as ""mid-30s"" but stated as **28 years old**
+- He is described as a **construction worker with chronic lower back pain**, yet the primary complaint shifts to **Achilles tendon rupture** with no clear mechanism linking the two
+- **""Rupture of a tendon from the Achilles muscle""** is anatomically imprecise — the Achilles tendon connects the gastrocnemius/",0.23,0.06,0.16,0,0.16,0.12,0.12,0.066666667,0.1,0.16,0.2768,982.1896708,979.8041474,1009.609076
+qwen_3b_0.5b,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,18.5488745,0.19490897,0.035765708,0.090233739,0.76900512,0.722179115,0.744801939,"# Clinical Case Study Evaluation: Achilles Tendon Condition
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Major concerns:**
+- The case is labelled as an **Achilles Tendon** condition, yet the clinical presentation is poorly aligned with this diagnosis
+- The mechanism (fall on hard surface) could be consistent with Achilles pathology, but the described symptom location is contradictory and inconsistent throughout:
+  - ""Pain along the **lateral** aspect of lower leg"" → suggests peroneal/fibular involvement
+  - ""Sharp pain localized to the **med",0.222,0.08,0.1,0,0.16,0.112,0.14,0,0.06,0.12,0.2615,992.6366919,991.5378831,1010.754843
+qwen_3b_0.5b,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,18.67362976,0.174223287,0.030052022,0.084755622,0.765628755,0.724081933,0.744175494,"I'll systematically evaluate this clinical case study across all four dimensions.
+
+---
+
+## 1. CLINICAL REASONING
+
+**Presentation → Diagnosis Analysis:**
+
+The case presents significant logical inconsistencies:
+
+- **""Cullen's sign""** is a clinical sign indicating retroperitoneal hemorrhage (periumbilical bruising) — it has **no relevance** to Achilles tendon pathology. This appears fabricated or misapplied.
+- **""RICE test""** is not a diagnostic test — RICE is a treatment protocol (Rest, Ice, Compression, Elevation). Using it as a confirmatory test is clinically nonsensical.
+- **""Left ankle Buerg",0.202,0.08,0.2,0,0.18,0.12,0.12,0,0.08,0.14,0.2778,983.4777989,986.498124,998.3040142
+smollm2,A1_distill_only,Distillation only — no Phase 3 refinement,A1_distill_only,15.379355,0.018754106,0.006007233,0.016935632,0.79022485,0.592514932,0.6762532,"I'll evaluate this case study across the four clinical reasoning dimensions.
+
+## Analysis
+
+### 1. CLINICAL REASONING
+The case study appears to contain no actual clinical content — only repeated placeholder headings (""Achilles Tendon: Case Study"") with no patient history, mechanism of injury, symptom description, differential diagnosis, or diagnostic reasoning presented. There is no logical pathway from presentation to diagnosis because no presentation or diagnosis is documented.
+
+**Rating: 0/10** — No clinical reasoning content exists.
+
+### 2. ASSESSMENT COMPLETENESS
+There is no subjective ass",0,0,0,0,0,0,0,0,0,0,0.1369,1436.030695,1433.993098,1462.995747
+smollm2,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,66.635667,0.155790142,0.02941358,0.089737097,0.758940816,0.688464344,0.721841037,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case Analysis
+
+---
+
+## 1. CLINICAL REASONING
+
+**Evaluation:**
+The presentation is broadly consistent with **chronic Achilles tendinopathy** (mid-portion or insertional) given:
+- 55-year-old male ✓ (typical demographic)
+- Months-long duration → chronic/degenerative phase ✓
+- Runner with progressive load increase ✓
+- Pain, swelling, stiffness ✓
+- Morning stiffness implied ✓
+
+**Deficiencies:**
+- No differentiation between **mid-portion vs. insertional tendinopathy** — clinically critical distinction that drives treatment
+- No ",0.06,0,0.212,0,0.12,0.088,0.04,0.16,0.12,0.06,0.2523,1271.442526,1269.793403,1276.433187
+smollm2,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,17.14532598,0.137764983,0.02564087,0.082144478,0.759451568,0.686974227,0.721063972,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Condition Analysis
+
+---
+
+## 1. CLINICAL REASONING
+
+**Evaluation:**
+The case presents a 35-year-old male with ankle pain, swelling, and history of high-impact sports (football). However, the clinical reasoning pathway is **significantly flawed**:
+
+- The title states ""Achilles Tendon"" condition, yet the history describes **lateral ankle tendonitis** (""outside of the ankle""), which would suggest peroneal tendinopathy — a **different structure entirely**
+- Achilles tendon pathology typically presents with **posterior heel/mid-t",0.1,0,0.25,0,0.22,0.104,0.06,0.18,0.1,0.08,0.2849,1268.257996,1267.72941,1272.388799
+smollm2,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,11.66178296,0.149986239,0.030871905,0.082678254,0.772735953,0.682600379,0.723485649,"I'll systematically evaluate this clinical case study across the four specified dimensions.
+
+---
+
+## 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Major Issues:**
+- The case presents **significant contradictions**: the patient has pain in his *right* Achilles tendon, yet the swelling/tenderness is described in the *left* Achilles tendon at one point, then switches back to the right ankle
+- The history of ankle sprain as a precursor to Achilles tendinopathy is plausible but **underdeveloped** — no mechanism of injury explained
+- The 10-20% strength reduction figure appears **repeate",0.04,0,0.164,0,0.06,0.06,0.02,0.12,0.08,0.04,0.221,409.1286298,408.6322299,412.7943096
+smollm2,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,11.79485225,0.167848367,0.036198226,0.091112229,0.773281276,0.706418872,0.7380445,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Significant concerns identified:**
+
+- The diagnosis of ""degenerative Achilles tendonitis"" is **terminologically outdated and contradictory** — degenerative pathology is now correctly termed **tendinopathy** (not tendinitis, which implies acute inflammation)
+- ""Lower end of the ankle"" is **anatomically imprecise** — Achilles pathology is typically insertional (at calcaneal attachment) or mid-portion (~2-6cm above insertion); this distinction is cli",0.12,0,0.24,0,0.14,0.124,0.08,0.22,0.12,0.08,0.2757,1267.131199,1267.223397,1268.457403
+smollm2,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,11.73907266,0.170635996,0.035215113,0.093069005,0.775800645,0.70189023,0.736515284,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendinopathy – 25-Year-Old Female Runner
+
+---
+
+## 1. CLINICAL REASONING
+
+**Presentation → Diagnosis Logic:**
+
+**Strengths:**
+- The demographic profile is clinically appropriate: a 25-year-old female runner returning from a high-volume marathoning season is a classic risk profile for Achilles tendinopathy
+- Load-related pain pattern is partially captured (pain during/after running, lasting 2-3 days post-activity)
+- Activity-specific aggravating factors (running, jumping, toe-loading) are consistent with Achilles tendinopathy presen",0.06,0,0.188,0,0.08,0.076,0.04,0.14,0.1,0.04,0.2386,411.5804914,410.780362,415.4292744
+medgemma3,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,15.73031067,0.163882258,0.036752364,0.09318939,0.775199533,0.71615684,0.744318008,"# MSK Physiotherapy Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Major deficiencies identified:**
+- The anatomical description is **factually incorrect** — the Achilles tendon runs from the calcaneus (heel bone) to the gastrocnemius/soleus muscle complex, **not** ""from the heel to the back of the thigh""
+- The clinical narrative is **internally contradictory** and incoherent: the patient is simultaneously ""walking on a treadmill for 30 minutes"" yet ""unable to walk for 3 days""
+- No differential diagnosis is offered (ruptu",0.122,0.08,0,0.02,0,0.1,0.02,0.08,0.08,0.06,0.2197,1003.194007,1002.788593,1006.774425
+medgemma3,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,12.46082522,0.168803712,0.036693951,0.096858181,0.7763533,0.714746475,0.74409616,"# MSK Physiotherapy Case Study Evaluation: Achilles Tendon
+
+## Clinical Analysis
+
+---
+
+### 1. CLINICAL REASONING
+**Logic from Presentation → Diagnosis**
+
+The case study provides **extremely limited clinical information**. There is:
+- A named condition (Achilles Tendon pathology)
+- A mention of ""complication of a previous injury""
+- No mechanism of injury described
+- No symptom presentation (pain location, nature, aggravating/easing factors)
+- No diagnostic pathway demonstrated
+- No differential diagnosis consideration
+
+**Assessment: Very Poor** — The reasoning chain is entirely absent. No clini",0.068,0.1,0,0.04,0,0.06,0,0.06,0.06,0.044,0.2065,1005.130785,1004.822091,1008.434934
+medgemma3,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,12.96636785,0.175197632,0.037915091,0.097094858,0.77520299,0.713304937,0.742758036,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case Analysis
+
+---
+
+## 1. CLINICAL REASONING
+**Is the logic from presentation → diagnosis sound?**
+
+The case study presents a 22-year-old male with chronic Achilles tendon pain, stiffness, and tenderness. However, the clinical reasoning is **severely deficient**:
+
+- The history is **repetitive and circular**, with the same sentences about ""history of past tendon injuries"" repeated verbatim multiple times with no new clinical information added
+- There is **no differential diagnosis** process documented (e.g., distinguishing ",0.064,0.1,0,0.02,0,0.06,0.02,0.02,0.04,0.032,0.2023,999.1777527,998.3336205,1003.776828
+medgemma3,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,12.99197882,0.184325739,0.040825562,0.1040903,0.776652932,0.712050915,0.742678523,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case – 65-year-old Female
+
+---
+
+## 1. CLINICAL REASONING
+
+**Assessment: Very Poor**
+
+The clinical reasoning chain from presentation to diagnosis is severely flawed:
+
+- The case presents **multiple contradictions and redundancies** – the patient is repeatedly diagnosed with ""chronic lower back pain"" in circular, copy-paste fashion (mentioned 4-5 times without progression)
+- The **primary complaint** (ankle injury during a daily walk → suspected Achilles tendon involvement) is never logically connected to a differential diagn",0.12,0.08,0,0.02,0,0.08,0.04,0.06,0.06,0.052,0.2179,998.344928,998.0189914,1003.159951
+medgemma3,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,13.08338498,0.175752332,0.034273532,0.098109363,0.774918854,0.712630212,0.742289901,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Major Concerns:**
+- The mechanism of injury is implausible and contradictory: a ""fall from a tree on his first day of school"" for a **26-year-old** is contextually incoherent
+- The case simultaneously describes the injury as ""recent"" (past year) yet ""chronic"" (>6 months) — these are inconsistently applied
+- The text confusingly states the injury is ""not self-healing"" then calls it ""self-rehabilitation,"" without explaining the distinction cli",0.108,0.08,0,0.02,0,0.1,0.04,0.08,0.06,0.06,0.2163,1002.650315,1002.514195,1005.176015
+medgemma_text,A0_teacher_baseline,Fine-tuned teacher only — no distillation or refinement,A0_teacher_baseline,6.862785398,0.199842662,0.049991042,0.10130071,0.801114857,0.739851296,0.769145668,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendinopathy – Expert Analysis
+
+---
+
+## 1. CLINICAL REASONING
+**Logic from Presentation → Diagnosis**
+
+**Strengths:**
+- Appropriate demographic profile (45-year-old male, active individual) aligns with typical Achilles tendinopathy presentation
+- Insidious onset correctly identified as hallmark of tendinopathy vs. acute rupture
+- Bilateral presentation noted, which is clinically plausible and relevant
+- Mid-portion classification specified, distinguishing from insertional tendinopathy (important for treatment selection)
+
+**Weaknes",0.32,0.12,0.1,0.34,0,0.24,0.56,0.46,0,0.492,0.392,4513.005994,4505.695692,4548.810346
+medgemma_text,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,8.283439938,0.173252262,0.038968615,0.088397081,0.772731662,0.721246362,0.745883584,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Mr. John Smith – Right Ankle/Achilles Tendon Presentation
+
+---
+
+## 1. CLINICAL REASONING
+
+### Strengths:
+- The presentation has several features consistent with **Achilles tendinopathy** (insertional or mid-portion):
+  - 50-year-old male (appropriate demographic)
+  - Dull ache in the lower heel region
+  - Activity-related pain (worsening after >20 minutes walking/running)
+  - Morning stiffness
+  - Recent increase in training load (progressive overload – a classic precipitating factor)
+  - Decrease in running speed/distance (functional decl",0.18,0.1,0.22,0.164,0,0.1,0.24,0.2,0,0.324,0.324,1908.774926,1907.356906,1913.917671
+medgemma_text,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,5.910706734,0.156862914,0.034865372,0.080525745,0.772856414,0.727659345,0.74950093,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendonitis – Case Analysis
+
+---
+
+## Preliminary Observation
+
+Before proceeding with dimensional analysis, it is critical to note that this case study is **essentially a blank template**. All patient characteristic fields, examination findings, treatment details, and outcome measures are **unpopulated**. The document contains only headers/labels with no clinical content. Additionally, the template shows significant structural disorganization with repetitive ""Self-Management Education"" fields (appearing ~25+ times), suggesting docum",0,0.12,0.1,0.08,0.124,0.212,0.12,0.14,0.16,0,0.262,1910.119456,1908.905911,1922.69439
+medgemma_text,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,6.237269196,0.172600334,0.035958486,0.08917811,0.76949805,0.720680058,0.744137049,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case Analysis
+
+---
+
+## 1. CLINICAL REASONING
+
+**Evaluation:**
+The case presents a 35-year-old male construction worker with a 2-month history of right Achilles tendon pain, morning stiffness, and activity-related pain (running/walking). The occupational context (construction work = repetitive loading, prolonged standing) is clinically relevant and partially supports the diagnosis of Achilles tendinopathy/tendinitis.
+
+**Strengths:**
+- Age and occupation align with typical presentation
+- Morning stiffness is a classic tendino",0,0.22,0.12,0.08,0.152,0.296,0.12,0.14,0.2,0,0.2937,1916.083418,1914.42552,1924.450998
+medgemma_text,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,6.081798651,0.170641082,0.036854897,0.085946961,0.77330333,0.731342018,0.751591563,"# Clinical Case Study Evaluation: Achilles Tendon Injury
+
+---
+
+## 1. CLINICAL REASONING
+
+**Presentation → Diagnosis Analysis:**
+
+The clinical reasoning demonstrates **partial soundness** but has notable gaps:
+
+**Strengths:**
+- Age (45M) is appropriate for insertional Achilles tendinopathy demographics
+- Symptom location (posterior heel/calcaneal insertion) correctly identified
+- Activity-related pain with recreational loading (hiking, golf) is consistent
+- Morning stiffness is a hallmark tendinopathy feature
+- Progressive worsening trajectory is clinically plausible
+
+**Weaknesses:**
+- The ""cat",0.14,0.36,0.28,0.22,0.1,0.12,0,0,0.224,0.386,0.3314,1895.386815,1894.285827,1899.136531
+medgemma_text,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,6.11372748,0.176914352,0.033955495,0.086852235,0.766433358,0.715854287,0.740181565,"# MSK Physiotherapy Clinical Case Evaluation: Achilles Tendinopathy
+
+---
+
+## 1. CLINICAL REASONING
+
+**Strengths:**
+- The link between sudden return to full-time running after inactivity and Achilles tendinopathy is clinically sound and well-supported by evidence
+- Localization to the **insertional** site (calcaneal insertion) is correctly identified and distinguished implicitly from mid-portion tendinopathy
+- Symptom profile is appropriate: morning stiffness, burning pain, aggravation with uphill walking and hard surfaces are classic presentations
+- Noted bony enlargement (likely Haglund's def",0.18,0.32,0.26,0.2,0.16,0.1,0,0,0.212,0.438,0.3512,1901.7512,1901.709403,1906.20506
+gemma3,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,15.88236978,0.170632351,0.037375748,0.095718115,0.773344398,0.716052055,0.743308842,"# MSK Physiotherapy Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+The clinical reasoning is severely flawed and incoherent. Multiple contradictions are present:
+- The patient is simultaneously described as **68 years old** and **30 years old**
+- He has **both** a ""3-month history"" and ""15-month history"" of Achilles tendinitis with no reconciliation
+- Comorbidities listed (chronic cough, low blood pressure **and** hypertension simultaneously) are contradictory and clinically irrelevant without explanation of their impact on",0.02,0,0.06,0.12,0.124,0,0.08,0.04,0.076,0.12,0.2202,1006.976894,1004.957623,1018.464268
+gemma3,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,13.47485554,0.171289008,0.037884094,0.097976202,0.769528687,0.705165267,0.735620618,"# MSK Physiotherapy Case Study Evaluation
+
+## Dimensional Analysis
+
+### 1. CLINICAL REASONING
+The case study demonstrates **critically poor clinical reasoning**. There is no patient presentation described, no symptom history, no mechanism of injury, and no diagnostic pathway outlined. The text contains no logical progression from presentation to diagnosis whatsoever. The description of the Achilles tendon as ""small"" and ""curved"" is anatomically inaccurate — it is the largest and strongest tendon in the body. There is no differential diagnosis, no clinical hypothesis, and no reasoning chain of ",0,0,0.04,0.04,0.064,0,0.02,0.02,0.016,0,0.1849,1011.087184,1009.195428,1016.956967
+gemma3,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,16.20911938,0.181814875,0.039345833,0.100417978,0.781967819,0.716421008,0.74752003,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Preliminary Observations
+
+Before reasoning through each dimension, I must note several **fundamental anatomical errors** in this case study that immediately undermine its clinical credibility:
+
+- The Achilles tendon does **not** run from the heel to the patella — it runs from the **gastrocnemius/soleus complex to the calcaneus (heel bone)**
+- The patella does **not** ""support the tibia"" — it is a sesamoid bone within the quadriceps mechanism
+- The case is **incomplete**, cutting off mid-sentence: *""His history includes a...""*
+
+---
+
+## Dime",0.02,0,0.1,0.1,0.098,0,0.04,0,0.044,0.06,0.215,1005.654731,1004.297001,1007.007507
+gemma3,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,16.10645858,0.174791957,0.040585373,0.096693622,0.785982847,0.716048121,0.749178827,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case Analysis
+
+---
+
+## 1. CLINICAL REASONING
+**Is the logic from presentation → diagnosis sound?**
+
+**Major Issues Identified:**
+
+- **Critical anatomical error:** The case study describes the Achilles tendon as *""a major nerve that connects the heel to the tibia""* — the Achilles tendon is a **tendon** (connective tissue), not a nerve. This is a fundamental anatomical inaccuracy that undermines all clinical credibility.
+- **Diagnostic contradiction:** The patient is labeled with *""Acute Achilles Tendon Disease""* yet the intr",0,0,0.08,0.08,0.09,0,0.02,0,0.028,0.04,0.205,1007.359201,1007.75064,1014.022981
+gemma3,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,16.14727114,0.179429878,0.038894907,0.100872342,0.775085151,0.716728389,0.744689941,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendon Case Analysis
+
+---
+
+## 1. CLINICAL REASONING
+
+**Evaluation: Very Poor**
+
+The clinical reasoning is fundamentally flawed and internally inconsistent:
+
+- The patient is described as 68 years old but was ""diagnosed with Achilles tendon injury at age 12"" — this creates a **56-year gap** with no clinical narrative bridging this history
+- A fall in 2012 is mentioned, but the patient was supposedly ""discharged from hospital at age 25"" — the timeline is **mathematically and logically incoherent**
+- No mechanism of injury is clearly",0.02,0,0.1,0.1,0.1,0,0.06,0.02,0.052,0.06,0.217,1010.352707,1009.172121,1012.910785
+mistral_tiny,A0_teacher_baseline,Fine-tuned teacher only — no distillation or refinement,A0_teacher_baseline,4895.637586,0.18368573,0.044713601,0.096518822,0.791384518,0.731709719,0.760151982,"# Clinical Case Study Evaluation: Nicole – Achilles Tendon
+
+---
+
+## 1. CLINICAL REASONING
+
+**Presentation → Diagnosis Logic:**
+
+The case presents several **significant clinical reasoning errors** that must be flagged:
+
+- **Thompson Test misinterpretation**: The Thompson test (calf squeeze test) is the gold standard for diagnosing **Achilles tendon RUPTURE**, not Achilles tendinopathy/tendinitis. A *positive* Thompson test indicates loss of plantar flexion, suggesting a **complete rupture** — a serious finding that would contraindicate continued running training entirely.
+- There is an **intern",0,0.172,0.406,0.06,0,0.16,0.14,0.1,0.3,0.2,0.3262,1673.528579,1670.620174,1678.267712
+mistral_tiny,A1_distill_only,Distillation only — no Phase 3 refinement,A1_distill_only,33.06589672,0.134342991,0.02164654,0.07412611,0.762171566,0.703625083,0.731572151,"# MSK Physiotherapy Case Study Evaluation
+
+## Achilles Tendon Injury – Critical Analysis
+
+---
+
+## 1. CLINICAL REASONING
+**Logic from Presentation → Diagnosis**
+
+- The case identifies a 45-year-old male post-motorcycle accident with right ankle pain and stiffness – this is a plausible mechanism for Achilles tendon injury
+- However, **no diagnostic reasoning is documented**. There is no mention of whether this is a rupture, tendinopathy, or partial tear
+- The link between the motorcycle accident mechanism and Achilles tendon pathology is **not explained or justified**
+- No differential diagnoses",0.2,0.148,0.258,0.12,0.2,0.2,0.1,0.1,0.2,0.12,0.2477,960.2549801,960.0285796,963.3501662
+mistral_tiny,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,87.59116081,0.144870351,0.027579677,0.076789336,0.772159934,0.704732597,0.736664891,"# MSK Physiotherapy Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Evaluation:**
+The case study presents a 31-year-old active female with Achilles tendon pain and stiffness, referred by her GP. There is a brief mention of initial misdiagnosis consideration (plantar fasciitis), which demonstrates some differential diagnostic awareness. However, the clinical reasoning is **severely underdeveloped**:
+
+- No description of onset mechanism (overuse, sudden load increase, biomechanical factors)
+- No differentiation between",0,0.112,0.182,0.02,0,0.12,0.08,0.1,0.22,0.12,0.2485,862.2251807,862.4183675,863.6606504
+mistral_tiny,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,10.15977705,0.143344698,0.030768418,0.07547203,0.780626655,0.714637458,0.745875657,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis
+
+**Evaluation:**
+The case presents some relevant clinical features (chronic Achilles pain >1 year, activity-related worsening, pain on uneven surfaces), which are consistent with **Achilles tendinopathy**. However, the clinical reasoning is critically deficient:
+
+- No differential diagnosis is offered (insertional vs. mid-portion tendinopathy not distinguished)
+- No mention of rupture risk assessment, Haglund's deformity, or bursitis
+- The comorbidit",0,0.116,0.252,0.06,0,0.14,0.08,0.1,0.18,0.12,0.2687,870.8577111,854.4765795,938.4424093
+mistral_tiny,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,21.88152988,0.152739916,0.030326063,0.084231096,0.774503589,0.712337375,0.741991043,"# MSK Physiotherapy Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING
+**Rating: Very Poor**
+
+The case study provides virtually no clinical reasoning pathway. There is:
+- No presenting complaint or mechanism of injury described
+- No differential diagnosis considered
+- No diagnostic reasoning connecting symptoms to a specific Achilles tendon pathology (e.g., mid-portion tendinopathy vs. insertional tendinopathy vs. acute rupture)
+- No mention of aggravating/easing factors, onset, or duration
+- The 24-year-old patient demographic is noted but not contextual",0,0.084,0.23,0.04,0,0.1,0.04,0.1,0.14,0.1,0.2553,856.6596806,856.0523649,859.0209612
+mistral_tiny,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,41.91148312,0.159439353,0.033344181,0.0855753,0.774058163,0.707590818,0.739228308,"# MSK Physiotherapy Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Major deficiencies:**
+- The diagnostic label of ""acute tendonitis"" is poorly justified. A 23-year-old post-marathon runner presenting with Achilles pain is more likely experiencing **tendinopathy** (degenerative/reactive) rather than true inflammatory tendonitis — modern evidence (Cook & Purdam, 2009) has largely moved away from the ""itis"" terminology
+- The reported symptom of **tingling** is neurological in nature and is **atypical** for Achilles tendon p",0,0.112,0.246,0.06,0,0.14,0.1,0.22,0.16,0.1,0.2899,900.3467849,896.239585,907.5106686
+mistral_tiny,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,43.31555719,0.150069084,0.030427484,0.083199174,0.770475686,0.709339976,0.738432765,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Weaknesses identified:**
+- There is a **temporal inconsistency**: the patient background states a **2-month history** of Achilles tendinopathy, yet the examination findings contradict this with a **1-week history**. This is a significant logical error that undermines diagnostic credibility.
+- The case study is **incomplete** — it cuts off mid-sentence (""She had been running on...""), leaving the clinical reasoning unfinished.
+- No differential diag",0,0.136,0.298,0.06,0,0.18,0.08,0.3,0.22,0.14,0.3245,900.2314579,897.6860766,909.380761
+meditron_phi4mini,A0_teacher_baseline,Fine-tuned teacher only — no distillation or refinement,A0_teacher_baseline,4.411232404,0.14819137,0.032830651,0.079641628,0.781146646,0.711332142,0.743902802,"# Clinical Case Study Evaluation: Achilles Tendinopathy
+
+## Preliminary Observation
+
+Before proceeding with full evaluation, I note that the case study provided is **incomplete**. The submission contains only the Introduction and Patient Information sections. Critical clinical components including subjective history, objective examination findings, special tests, diagnosis rationale, treatment plan, and outcome measures are **absent**. I will evaluate what has been presented across each dimension accordingly.
+
+---
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING
+*Is the logi",0.22,0.398,0.28,0,0,0.224,0.38,0.14,0.28,0.1,0.3682,1621.431458,1618.567727,1642.347623
+meditron_phi4mini,A1_distill_only,Distillation only — no Phase 3 refinement,A1_distill_only,55.08026472,0.153943154,0.029200008,0.09035892,0.758991838,0.679253161,0.716176331,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension 1: CLINICAL REASONING
+
+**Presentation → Diagnosis Logic:**
+
+The case presents a 55-year-old female receptionist with a 2-year history of heel pain and Achilles tendon pain, with a confirmed heel spur (calcaneal enthesophyte). The occupational history (prolonged standing/sitting as receptionist) and training load (2 hours/day, 3x/week gym) are relevant contextual factors that could contribute to Achilles tendinopathy and insertional pathology.
+
+**Weaknesses:**
+- No differential diagnosis process is documented (e.g., ruling out ins",0.1,0.202,0.14,0,0,0.1,0.14,0.06,0.28,0.06,0.2838,714.5227558,712.9070715,721.8161876
+qwq_qwen1.5b,A2_rl_task_accuracy,KD + RL with task accuracy reward (no teacher agreement),A2_rl_task_accuracy,83.57085886,0.170139797,0.027764806,0.077258628,0.759608924,0.726313472,0.742472947,"# MSK Physiotherapy Case Study Evaluation
+
+## Condition: Achilles Tendon | 16-year-old Female with Recurrent Lower Leg Pain
+
+---
+
+## 1. CLINICAL REASONING
+
+**Significant errors and inconsistencies identified:**
+
+- **Critical Error – Wrong Special Test:** The **Lachman test** is a knee ligament assessment for the **anterior cruciate ligament (ACL)** — it has **no diagnostic relevance** to Achilles tendon pathology. The appropriate test would be the **Thompson/Simmonds test** (calf squeeze test) for Achilles tendon rupture, or **Royal London Hospital test** for tendinopathy.
+- **Diagnostic Misma",0,0.32,0.12,0.342,0,0.2,0.196,0.06,0.28,0.1,0.3107,1125.510974,1123.034721,1130.819877
+qwq_qwen1.5b,A0_teacher_baseline,Fine-tuned teacher only — no distillation or refinement,A0_teacher_baseline,9.276078819,0.155856516,0.035637708,0.08208324,0.775498986,0.715581298,0.743375838,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Achilles Tendinopathy – Expert Analysis
+
+---
+
+## 1. CLINICAL REASONING – Presentation → Diagnosis
+
+### Strengths:
+- The gradual onset narrative is **clinically appropriate** for chronic tendinopathy (as opposed to acute rupture)
+- Correct identification of **morning stiffness improving with activity** – a hallmark ""warm-up phenomenon"" consistent with tendinopathy pathophysiology
+- Activity-related pain (stairs, uneven surfaces) aligns logically with **load-dependent tendon pain**
+- Occupational context (construction worker) appropriately i",0.24,0.48,0.3,0.2,0.08,0,0.12,0,0.5,0.14,0.3649,3654.516581,3439.698571,4167.149661
+qwq_qwen1.5b,A1_distill_only,Distillation only — no Phase 3 refinement,A1_distill_only,10.3188849,0.171702933,0.029228116,0.078449271,0.757502437,0.725165009,0.740840375,"# MSK Physiotherapy Clinical Case Evaluation
+## Achilles Tendinopathy – Sarah Smith, Age 54
+
+---
+
+## 1. CLINICAL REASONING
+
+### Strengths:
+- The presentation has some relevant features consistent with Achilles tendinopathy (chronic pain, stiffness, activity-related pain, tenderness over the tendon, crepitus)
+- Age and activity history (running, tennis) are appropriate risk factors
+- The bilateral nature is noted
+
+### Weaknesses:
+- **Critical anatomical error**: ""Palpable thickening at insertion of fibularis muscle"" — the fibularis (peroneal) is anatomically distinct from the Achilles tendon co",0.208,0.312,0.18,0.22,0.06,0,0.14,0,0.44,0.16,0.318,1262.782305,1260.882082,1281.037966
+qwq_qwen1.5b,A3_dynamic_ranks_no_rl,"KD + dynamic LoRA ranks, no RL",A3_dynamic_ranks_no_rl,17.23438286,0.178834889,0.028248259,0.080191927,0.767182112,0.726030052,0.745965719,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimensional Analysis
+
+---
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis Logic
+
+**Strengths:**
+- The case establishes relevant risk factors: young athletic male, elevated BMI, high-demand recreational sports (basketball, soccer, running)
+- Chronicity (6 months progressive) appropriately points toward tendinopathy rather than acute pathology
+- Functional limitations (stairs, uneven surfaces, prolonged loading) are consistent with Achilles tendon dysfunction
+
+**Weaknesses/Gaps:**
+- **Red flag insufficiently explored:** The neurologica",0.236,0.36,0.28,0.22,0.08,0,0.16,0,0.44,0.18,0.3422,1148.096917,1146.444079,1152.424091
+qwq_qwen1.5b,A4_kd_guidance_rl,KD + RL + dynamic ranks + teacher KD guidance (no agreement reward),A4_kd_guidance_rl,9.86242554,0.189603259,0.037079227,0.087809132,0.77700603,0.733748794,0.754651189,"# MSK Physiotherapy Clinical Case Evaluation: Achilles Tendonitis
+
+## Preliminary Observations
+
+Before scoring each dimension, I'll note that the case study appears **incomplete** — the assessment section ends abruptly at ""5. Reflexes:"" with no content, and there is no treatment plan or outcome measures section provided. This significantly impacts the evaluation.
+
+---
+
+## Dimension-by-Dimension Analysis
+
+### 1. CLINICAL REASONING – Presentation → Diagnosis
+
+**Strengths:**
+- The gradual onset narrative is consistent with tendinopathy/tendonitis etiology
+- Aggravating factors (prolonged standing",0.366,0,0,0.228,0.14,0.4,0.26,0.24,0.22,0.1,0.3522,1291.216538,1330.020149,1347.534641
+qwq_qwen1.5b,A5_full_pipeline,Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward,A5_full_pipeline,9.689276647,0.185899528,0.033870663,0.08440947,0.768775463,0.72562921,0.746507466,"# MSK Physiotherapy Clinical Case Study Evaluation
+
+## Dimension-by-Dimension Analysis
+
+---
+
+### 1. CLINICAL REASONING (Presentation → Diagnosis)
+
+**Significant concerns identified:**
+
+- The case describes a **sudden, severe Achilles tendon injury** during basketball with inability to bear weight — this clinical picture is highly suspicious for **Achilles tendon rupture**, yet no formal diagnosis is reached or stated
+- The pain is localised to the **insertion point (enthesis)** at the calcaneus, which is more consistent with **insertional Achilles tendinopathy or avulsion**, rather than the mo",0.18,0.324,0.12,0.14,0.14,0.08,0.144,0.2,0,0,0.3027,1300.420262,1315.627269,1327.576449
+qwq_qwen1.5b,A6_fixed_rank_lora,Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation,A6_fixed_rank_lora,11.18887386,0.187740989,0.03360921,0.086320743,0.765469193,0.726484418,0.745362878,"# MSK Physiotherapy Clinical Case Evaluation: Achilles Tendinopathy
+
+---
+
+## 1. CLINICAL REASONING
+
+**Strengths:**
+- The presentation is broadly consistent with chronic Achilles tendinopathy: a 45-year-old female, recreational tennis player (repetitive loading), morning stiffness, pain worse after exercise, and pain at the insertion site on palpation
+- The reduction in activity level as a response to pain is a clinically relevant and realistic detail
+- Insertion site pain is correctly identified and distinguished implicitly from mid-portion tendinopathy
+
+**Weaknesses:**
+- The diagnosis of ""chr",0.1,0,0.14,0.08,0.2,0,0.418,0.28,0.28,0.22,0.3322,1147.995026,1146.204575,1150.582632

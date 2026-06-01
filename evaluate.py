@@ -324,7 +324,9 @@ class PipelineEvaluator:
     def compute_perplexity(self, model, dataset: Dataset, max_batches: int = 100) -> float:
         model.eval()
         loader = DataLoader(dataset, batch_size=1,
-                            collate_fn=lambda x: {k: torch.stack([i[k] for i in x]) for k in x[0].keys()})
+                            collate_fn=lambda x: {k: torch.stack([i[k] for i in x])
+                                                  for k in x[0].keys()
+                                                  if isinstance(x[0][k], torch.Tensor)})
         total_nll, total_tokens = 0.0, 0
         with torch.no_grad():
             for idx, batch in enumerate(loader):

@@ -11,6 +11,9 @@ class ModelPair:
     student_size: str
     tuned_teacher: str = ""
     distilled_student: str = ""
+    # Per-family teacher-agreement reward weights (overrides global RefinementConfig values)
+    agreement_weight: float = 0.3   # lambda1 — teacher-student agreement bonus
+    kl_reward_weight: float = 0.2   # lambda2 — KL divergence penalty
 
 @dataclass
 class QLoRAConfig:
@@ -63,30 +66,29 @@ class RefinementConfig:
     weight_decay: float = 0.01
     device: str = "cuda:0"
     logging_steps: int = 10
-    # Layer selection strategy: all | performance_based | attention_only | mlp_only
-    layer_selection_strategy: str = "performance_based"
+    layer_selection_strategy: str = "performance_based" #all | performance_based | attention_only | mlp_only
     num_layers_to_refine: Optional[int] = None
     performance_threshold: float = 0.95
-    # Teacher guidance (KD term during refinement)
-    use_teacher_guidance: bool = True
+    use_teacher_guidance: bool = True # Teacher guidance (KD term during refinement)
     teacher_guidance_weight: float = 0.3
     # RL
     use_rl: bool = True
     rl_beta: float = 0.1
     rl_reward_type: str = "teacher_agreement"  # task_accuracy | teacher_agreement
-    # Dynamic LoRA ranks — novel degradation-based allocation
     use_dynamic_ranks: bool = True
     lora_r_high: int = 32    # degradation score >= 0.8
     lora_r_medium: int = 16  # 0.5 <= score < 0.8
     lora_r_low: int = 8      # 0.3 <= score < 0.5
     lora_r_minimal: int = 4  # score < 0.3
-    # Teacher-student agreement reward — novel
     use_teacher_agreement_reward: bool = True
-    agreement_weight: float = 0.3   # lambda1
-    kl_reward_weight: float = 0.2   # lambda2
-    # Memory
+    agreement_weight: float = 0.3   # lambda1 (global fallback; per-family weights in ModelPair)
+    kl_reward_weight: float = 0.2   # lambda2 (global fallback; per-family weights in ModelPair)
+    model_pair_key: str = "" # Per-family weight routing — set to the active MODEL_PAIRS key at runtime
     teacher_offload_folder: Optional[str] = "./teacher_offload"
     use_8bit_teacher: bool = True
+    ppl_monitor_steps: int = 50      # compute PPL every N steps (0 = disabled)
+    ppl_hacking_threshold: float = 2.0  # warn if PPL > baseline * threshold
+    num_eval_seeds: int = 1
 
 @dataclass
 class AblationConfig:
@@ -100,6 +102,7 @@ class AblationConfig:
     use_teacher_agreement_reward: bool = True
     rl_reward_type: str = "teacher_agreement"
     layer_selection_strategy: str = "performance_based"
+    fixed_lora_r: Optional[int] = None
 
 ABLATION_CONFIGS = [
     AblationConfig("A0_teacher_baseline",
@@ -122,80 +125,96 @@ ABLATION_CONFIGS = [
                    "KD + RL + dynamic ranks + teacher KD guidance (no agreement reward)",
                    use_rl=True, use_dynamic_ranks=True,
                    use_teacher_guidance=True, use_teacher_agreement_reward=False),
-    # AblationConfig("A5_full_pipeline",
-    #                "Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward",
-    #                use_rl=True, use_dynamic_ranks=True,
-    #                use_teacher_guidance=True, use_teacher_agreement_reward=True),
+    AblationConfig("A5_full_pipeline",
+                   "Full method: KD + hybrid KD+RL + dynamic ranks + agreement reward",
+                   use_rl=True, use_dynamic_ranks=True,
+                   use_teacher_guidance=True, use_teacher_agreement_reward=True),
+    AblationConfig("A6_fixed_rank_lora",
+                   "Full method with fixed uniform LoRA rank (r=16) — isolates benefit of dynamic rank allocation",
+                   use_rl=True, use_dynamic_ranks=False,
+                   use_teacher_guidance=True, use_teacher_agreement_reward=True,
+                   fixed_lora_r=16),
 ]
 
 MODEL_PAIRS = {
+    #Llama family — shared tokenizer, moderate agreement emphasis
     "llama_3b_1b": ModelPair(
         "meta-llama/Llama-3.2-3B-Instruct", "meta-llama/Llama-3.2-1B-Instruct",
         "3B", "1B",
         "./models/llama_3b_1b/phase1_teacher",
-        "./models/llama_3b_1b/phase2_student"
+        "./models/llama_3b_1b/phase2_student",
+        agreement_weight=0.30, kl_reward_weight=0.20,
     ),
+    "llama_tiny": ModelPair(
+        "meta-llama/Llama-3.2-3B-Instruct", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        "3B", "1B",
+        "./models/llama_tiny/phase1_teacher",
+        "./models/llama_tiny/phase2_student",
+        # cross-family pair: looser agreement target, lighter KL penalty
+        agreement_weight=0.25, kl_reward_weight=0.15,
+    ),
+    #Qwen family — different tokenizer; slightly reduced KL penalty to avoid over-penalising vocab mismatches
     "qwen_3b_0.5b": ModelPair(
         "Qwen/Qwen2.5-3B-Instruct", "Qwen/Qwen2.5-0.5B-Instruct",
         "3B", "0.5B",
         "./models/qwen_3b_0.5b/phase1_teacher",
-        "./models/qwen_3b_0.5b/phase2_student"
+        "./models/qwen_3b_0.5b/phase2_student",
+        agreement_weight=0.25, kl_reward_weight=0.15,
     ),
+    #SmolLM2 — small capacity gap; lower agreement weight to avoid over-constraining the student
     "smollm2": ModelPair(
         "HuggingFaceTB/SmolLM2-1.7B-Instruct", "HuggingFaceTB/SmolLM2-360M-Instruct",
         "1.7B", "360M",
         "./models/smollm2/phase1_teacher",
-        "./models/smollm2/phase2_student"
+        "./models/smollm2/phase2_student",
+        agreement_weight=0.20, kl_reward_weight=0.15,
     ),
-    "deepseek_7b": ModelPair(
-        "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
-        "7B", "1.5B",
-        "./models/deepseek_7b/phase1_teacher",
-        "./models/deepseek_7b/phase2_student"
-    ),
+    # # Medical Gemma family — clinical accuracy critical; higher agreement weight
     "medgemma3": ModelPair(
         "google/medgemma-1.5-4b-it", "google/gemma-3-270m-it",
         "4B", "270m",
-        "./models/medgemma3/phase1_teacher",       
-        "./models/medgemma3/phase2_student"    
+        "./models/medgemma3/phase1_teacher",
+        "./models/medgemma3/phase2_student",
+        agreement_weight=0.40, kl_reward_weight=0.25,
     ),
     "medgemma_text": ModelPair(
         "google/medgemma-27b-text-it", "google/medgemma-1.5-4b-it",
         "27B", "1.5B",
-        "./models/medgemma_text/phase1_teacher",       
-        "./models/medgemma_text/phase2_student"    
+        "./models/medgemma_text/phase1_teacher",
+        "./models/medgemma_text/phase2_student",
+        agreement_weight=0.40, kl_reward_weight=0.25,
     ),
     "gemma3": ModelPair(
         "google/gemma-3-1b-pt", "google/gemma-3-270m-it",
         "1B", "270m",
-        "./models/gemma3/phase1_teacher",       
-        "./models/gemma3/phase2_student"    
+        "./models/gemma3/phase1_teacher",
+        "./models/gemma3/phase2_student",
+        agreement_weight=0.35, kl_reward_weight=0.20,
     ),
+    # # Mistral cross-family — standard weights
     "mistral_tiny": ModelPair(
         "mistralai/Mistral-7B-v0.1", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
         "7B", "1.1B",
         "./models/mistral_tiny/phase1_teacher",
-        "./models/mistral_tiny/phase2_student"
+        "./models/mistral_tiny/phase2_student",
+        agreement_weight=0.25, kl_reward_weight=0.15,
     ),
+    # Meditron — medical domain, higher agreement like medgemma
     "meditron_phi4mini": ModelPair(
         "epfl-llm/meditron-7b", "meta-llama/Llama-3.2-1B",
         "7B", "1B",
         "./models/meditron_phi4mini/phase1_teacher",
-        "./models/meditron_phi4mini/phase2_student"
+        "./models/meditron_phi4mini/phase2_student",
+        agreement_weight=0.40, kl_reward_weight=0.25,
     ),
+    # QwQ / Qwen large-to-small — same family, moderate weights
     "qwq_qwen1.5b": ModelPair(
         "Qwen/QwQ-32B", "Qwen/Qwen2.5-1.5B-Instruct",
         "32B", "1.5B",
         "./models/qwq_qwen1.5b/phase1_teacher",
-        "./models/qwq_qwen1.5b/phase2_student"
+        "./models/qwq_qwen1.5b/phase2_student",
+        agreement_weight=0.30, kl_reward_weight=0.20,
     ),
-    "deepseek_phi4mini": ModelPair(
-        "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
-        "32B", "1.5B",
-        "./models/deepseek_phi4mini/phase1_teacher",
-        "./models/deepseek_phi4mini/phase2_student"
-    ),
-
 }
 
 class MSKCaseStudyDataset(Dataset):
@@ -261,5 +280,6 @@ class MSKCaseStudyDataset(Dataset):
         else:
             labels = input_ids.clone()
 
-        return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
+        return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels,
+                "raw_text": full_text}
     

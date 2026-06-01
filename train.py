@@ -2,7 +2,7 @@ import os, ast, gc, json, time
 import numpy as np
 import pandas as pd
 from copy import deepcopy
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import torch
 import torch.nn as nn
@@ -13,6 +13,8 @@ from transformers.trainer import Trainer
 from transformers.training_args import TrainingArguments
 from transformers import (
     AutoModelForCausalLM, AutoTokenizer,
+    #TrainingArguments, 
+    #Trainer,
     BitsAndBytesConfig, DataCollatorForLanguageModeling,
     get_linear_schedule_with_warmup
 )
@@ -25,6 +27,7 @@ import seaborn as sns
 from tqdm import tqdm
 try:
     from .shared import MODEL_PAIRS, MSKCaseStudyDataset, QLoRAConfig, DistillationConfig, RefinementConfig
+    from .config import MODEL_PAIR_KEY, model_pair, qlora_cfg, distill_cfg, refine_cfg
 except ImportError:
     from shared import MODEL_PAIRS, MSKCaseStudyDataset, QLoRAConfig, DistillationConfig, RefinementConfig
 
@@ -178,6 +181,8 @@ class KnowledgeDistillationTrainer:
 
         print("Loading teacher model...")
         self.teacher_tokenizer = AutoTokenizer.from_pretrained(teacher_model_path)
+        if self.teacher_tokenizer.pad_token is None:
+            self.teacher_tokenizer.pad_token = self.teacher_tokenizer.eos_token
         _teacher_bnb = (
             BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_use_double_quant=True,
                                bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16)
@@ -237,10 +242,15 @@ class KnowledgeDistillationTrainer:
         if k > 0:
             # top-k logit distillation: KL over k positions only
             # reduces KL tensor from [N, vocab] to [N, k] — vocab can be 150k+
+            # For cross-family pairs (e.g. Llama 128k → TinyLlama 32k), restrict
+            # teacher to student vocab before top-k so gather indices stay in bounds.
             with torch.no_grad():
-                top_vals, top_idx = at_.topk(k, dim=-1)          # [N, k]
+                student_vocab = as_.size(-1)
+                t_for_topk = at_[..., :student_vocab] if at_.size(-1) > student_vocab else at_
+                actual_k = min(k, student_vocab)
+                top_vals, top_idx = t_for_topk.topk(actual_k, dim=-1)  # [N, actual_k]
                 soft_t = F.softmax(top_vals / self.temperature, dim=-1)
-            s_top = as_.gather(1, top_idx)                        # [N, k]
+            s_top = as_.gather(1, top_idx)                        # [N, actual_k]
             log_soft_s = F.log_softmax(s_top / self.temperature, dim=-1)
             soft_loss = F.kl_div(log_soft_s, soft_t, reduction="batchmean") * (self.temperature ** 2)
         else:
@@ -255,13 +265,17 @@ class KnowledgeDistillationTrainer:
 
     @staticmethod
     def _collate(batch):
-        return {
-            k: torch.nn.utils.rnn.pad_sequence(
-                [item[k][:256].clone().detach() if isinstance(item[k], torch.Tensor)
-                 else torch.tensor(item[k][:256]) for item in batch],
-                batch_first=True, padding_value=0
-            ) for k in batch[0].keys()
-        }
+        result = {}
+        for k in batch[0].keys():
+            if isinstance(batch[0][k], str):
+                result[k] = [item[k] for item in batch]
+            else:
+                result[k] = torch.nn.utils.rnn.pad_sequence(
+                    [item[k][:256].clone().detach() if isinstance(item[k], torch.Tensor)
+                     else torch.tensor(item[k][:256]) for item in batch],
+                    batch_first=True, padding_value=0
+                )
+        return result
 
     def train(self, train_dataset, eval_dataset=None, run_name: str = "distillation"):
         print("Starting knowledge distillation...")
@@ -292,7 +306,18 @@ class KnowledgeDistillationTrainer:
                 mask = batch["attention_mask"].to(self.student_model.device)
                 lbls = batch["labels"].to(self.student_model.device)
                 with torch.inference_mode():
-                    t_out = self.teacher_model(input_ids=ids.to(t_dev), attention_mask=mask.to(t_dev))
+                    if "raw_text" in batch:
+                        # Re-tokenize with teacher's own tokenizer to avoid cross-family
+                        # vocab mismatch (e.g. student 128k IDs fed to teacher 32k model).
+                        t_enc = self.teacher_tokenizer(
+                            batch["raw_text"], truncation=True, max_length=ids.shape[1],
+                            padding="max_length", return_tensors="pt"
+                        )
+                        t_ids = t_enc["input_ids"].to(t_dev)
+                        t_mask = t_enc["attention_mask"].to(t_dev)
+                    else:
+                        t_ids, t_mask = ids.to(t_dev), mask.to(t_dev)
+                    t_out = self.teacher_model(input_ids=t_ids, attention_mask=t_mask)
                 t_logits = t_out.logits.to(self.student_model.device)
                 s_out = self.student_model(input_ids=ids, attention_mask=mask)
                 loss = self.distillation_loss(s_out.logits, t_logits, lbls, mask)
@@ -346,6 +371,13 @@ class RefinementTrainer:
         )
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
+
+        self.teacher_tokenizer = None
+        if teacher_model_hf_path:
+            self.teacher_tokenizer = AutoTokenizer.from_pretrained(teacher_model_hf_path)
+            if self.teacher_tokenizer.pad_token is None:
+                self.teacher_tokenizer.pad_token = self.teacher_tokenizer.eos_token
+
         print("RefinementTrainer ready")
 
     @staticmethod
@@ -472,8 +504,18 @@ class RefinementTrainer:
                 mask = sample["attention_mask"].unsqueeze(0).to(self.device)
                 t_dev = next(self.teacher_model.parameters()).device
 
+                if self.teacher_tokenizer is not None and "raw_text" in sample:
+                    t_enc = self.teacher_tokenizer(
+                        sample["raw_text"], truncation=True, max_length=ids.shape[1],
+                        padding="max_length", return_tensors="pt"
+                    )
+                    t_ids = t_enc["input_ids"].to(t_dev)
+                    t_mask = t_enc["attention_mask"].to(t_dev)
+                else:
+                    t_ids, t_mask = ids.to(t_dev), mask.to(t_dev)
+
                 s_logits = _model_forward(self.distilled_model, ids, mask).logits
-                t_logits = _model_forward(self.teacher_model, ids.to(t_dev), mask.to(t_dev)).logits.to(self.device)
+                t_logits = _model_forward(self.teacher_model, t_ids, t_mask).logits.to(self.device)
                 min_v = min(s_logits.size(-1), t_logits.size(-1))
                 kl = F.kl_div(
                     F.log_softmax(s_logits[..., :min_v].float(), dim=-1),
@@ -523,11 +565,14 @@ class RefinementTrainer:
         else:
             return ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
 
-    def apply_lora_adapters(self):
+    def apply_lora_adapters(self, fixed_lora_r: Optional[int] = None):
         target_modules = self.config.target_modules or self.select_target_modules()
         lora_r = self.config.lora_r
 
-        if self.config.use_dynamic_ranks and self.layer_performance_scores:
+        if fixed_lora_r is not None:
+            lora_r = fixed_lora_r
+            print(f"  Fixed-rank LoRA baseline: r={lora_r}")
+        elif self.config.use_dynamic_ranks and self.layer_performance_scores:
             ranks = list(self.select_dynamic_lora_ranks().values())
             lora_r = int(np.median(ranks))
             print(f"  Median dynamic rank: {lora_r}")
@@ -581,12 +626,21 @@ class RefinementTrainer:
                  + self.config.rl_beta * rl_loss)
         return total, task_loss, kl_loss, rl_loss
 
+    def _get_reward_weights(self) -> Tuple[float, float]:
+        # Per-family weights take precedence over global config values.
+        key = self.config.model_pair_key
+        if key and key in MODEL_PAIRS:
+            mp = MODEL_PAIRS[key]
+            return mp.agreement_weight, mp.kl_reward_weight
+        return self.config.agreement_weight, self.config.kl_reward_weight
+
     def calculate_rewards(self, logits, labels, attention_mask,
                           teacher_logits=None) -> torch.Tensor:
         # Teacher-student agreement reward:
         # reward = accuracy + lambda1*agreement - lambda2*KL_penalty
         B = logits.size(0)
         rewards = torch.zeros(B, device=logits.device)
+        agreement_w, kl_w = self._get_reward_weights()
 
         for i in range(B):
             mask = attention_mask[i, 1:].bool()
@@ -606,11 +660,30 @@ class RefinementTrainer:
                 t_p = F.softmax(teacher_logits[i, :, :min_v].float().to(logits.device), dim=-1)
                 kl_pen = F.kl_div(s_lp, t_p, reduction="batchmean").clamp(min=0)
                 reward = (accuracy
-                          + self.config.agreement_weight * agreement
-                          - self.config.kl_reward_weight * kl_pen)
+                          + agreement_w * agreement
+                          - kl_w * kl_pen)
             rewards[i] = reward
 
         return rewards.detach()
+
+    def compute_ppl(self, eval_dataset: Dataset, num_samples: int = 20) -> float:
+        """Perplexity via teacher-forcing cross-entropy (exp of avg loss)."""
+        model = self.peft_model or self.distilled_model
+        model.eval()
+        total_loss, count = 0.0, 0
+        with torch.no_grad():
+            for idx in range(min(num_samples, len(eval_dataset))):
+                sample = eval_dataset[idx]
+                ids = sample["input_ids"].unsqueeze(0).to(self.device)
+                mask = sample["attention_mask"].unsqueeze(0).to(self.device)
+                lbls = sample["labels"].unsqueeze(0).to(self.device)
+                out = _model_forward(model, ids, mask, labels=lbls)
+                if not torch.isnan(out.loss) and not torch.isinf(out.loss):
+                    total_loss += out.loss.item()
+                    count += 1
+        model.train()
+        avg_loss = total_loss / max(count, 1)
+        return float(np.exp(min(avg_loss, 20.0)))  # cap to prevent overflow
 
 
     def train(self, train_dataset, eval_dataset=None, output_dir: str = "./refined",
@@ -641,6 +714,15 @@ class RefinementTrainer:
         #            config=asdict(self.config), tags=["phase3", "refinement"])
 
         history, global_step = [], 0
+        ppl_baseline: Optional[float] = None
+        monitor_ppl = (
+            self.config.ppl_monitor_steps > 0
+            and eval_dataset is not None
+            and (self.config.use_rl or self.config.rl_reward_type == "task_accuracy")
+        )
+        if monitor_ppl:
+            ppl_baseline = self.compute_ppl(eval_dataset)
+            print(f"  PPL baseline (pre-training): {ppl_baseline:.2f}")
 
         for epoch in range(self.config.num_epochs):
             epoch_loss = 0.0
@@ -654,7 +736,16 @@ class RefinementTrainer:
                 if self.teacher_model is not None:
                     t_dev = next(self.teacher_model.parameters()).device
                     with torch.inference_mode():
-                        t_out = _model_forward(self.teacher_model, ids.to(t_dev), mask.to(t_dev))
+                        if self.teacher_tokenizer is not None and "raw_text" in sample:
+                            t_enc = self.teacher_tokenizer(
+                                sample["raw_text"], truncation=True, max_length=ids.shape[1],
+                                padding="max_length", return_tensors="pt"
+                            )
+                            t_ids = t_enc["input_ids"].to(t_dev)
+                            t_mask = t_enc["attention_mask"].to(t_dev)
+                        else:
+                            t_ids, t_mask = ids.to(t_dev), mask.to(t_dev)
+                        t_out = _model_forward(self.teacher_model, t_ids, t_mask)
                     t_logits = t_out.logits.to(self.device)
 
                 s_out = _model_forward(model, ids, mask)
@@ -686,12 +777,28 @@ class RefinementTrainer:
                     print(f"Ep {epoch+1}/{self.config.num_epochs} step {global_step} | "
                           f"task={task_l.item():.4f} kl={kl_l.item():.4f} rl={rl_l.item():.4f}")
 
+                # PPL monitoring — detect reward hacking early in RL runs
+                if (monitor_ppl
+                        and self.config.ppl_monitor_steps > 0
+                        and global_step % self.config.ppl_monitor_steps == 0):
+                    current_ppl = self.compute_ppl(eval_dataset)
+                    ratio = current_ppl / ppl_baseline if ppl_baseline else 1.0
+                    flag = ("  [WARNING: possible reward hacking]"
+                            if ratio > self.config.ppl_hacking_threshold else "")
+                    print(f"  PPL @ step {global_step}: {current_ppl:.2f} "
+                          f"(x{ratio:.2f} vs baseline){flag}")
+
             avg = epoch_loss / len(train_dataset)
             history.append(avg)
             if eval_dataset:
-                eval_loss = self.evaluate(eval_dataset)
-                # wandb.log({"eval_loss": eval_loss, "epoch": epoch})
-                print(f"  Epoch {epoch+1} — train={avg:.4f} eval={eval_loss:.4f}")
+                if self.config.num_eval_seeds > 1:
+                    eval_loss, eval_std = self.evaluate_multi_seed(eval_dataset)
+                    print(f"  Epoch {epoch+1} — train={avg:.4f} "
+                          f"eval={eval_loss:.4f} ± {eval_std:.4f}")
+                else:
+                    eval_loss = self.evaluate(eval_dataset)
+                    # wandb.log({"eval_loss": eval_loss, "epoch": epoch})
+                    print(f"  Epoch {epoch+1} — train={avg:.4f} eval={eval_loss:.4f}")
 
         self.save_model(output_dir)
         if push_to_hub and hub_model_id:
@@ -701,20 +808,50 @@ class RefinementTrainer:
         self.unload_teacher_model()
         return history
 
-    def evaluate(self, eval_dataset: Dataset, num_batches: int = 50) -> float:
+    def evaluate(self, eval_dataset: Dataset, num_batches: int = 50,
+                 stochastic: bool = False) -> float:
+        """Cross-entropy loss over up to num_batches samples.
+
+        stochastic=True keeps dropout active so repeated calls with different
+        seeds give variance estimates for multi-seed averaging.
+        """
         model = self.peft_model or self.distilled_model
-        model.eval()
+        if not stochastic:
+            model.eval()
         total, count = 0.0, 0
         with torch.no_grad():
             for idx in range(min(num_batches, len(eval_dataset))):
                 sample = eval_dataset[idx]
                 ids = sample["input_ids"].unsqueeze(0).to(self.device)
                 mask = sample["attention_mask"].unsqueeze(0).to(self.device)
-                out = model(ids, mask, labels=sample["labels"].unsqueeze(0).to(self.device))
-                total += out.loss.item()
-                count += 1
-        model.train()
+                out = _model_forward(model, ids, mask,
+                                     labels=sample["labels"].unsqueeze(0).to(self.device))
+                if not torch.isnan(out.loss) and not torch.isinf(out.loss):
+                    total += out.loss.item()
+                    count += 1
+        if not stochastic:
+            model.train()
         return total / max(count, 1)
+
+    def evaluate_multi_seed(self, eval_dataset: Dataset,
+                            num_batches: int = 50) -> Tuple[float, float]:
+        """Returns (mean_loss, std_loss) across config.num_eval_seeds seeds.
+
+        Uses stochastic eval (dropout active) so different seeds produce
+        different forward-pass outcomes — meaningful variance estimates.
+        """
+        n = self.config.num_eval_seeds
+        if n <= 1:
+            return self.evaluate(eval_dataset, num_batches), 0.0
+        losses = []
+        for seed in range(n):
+            torch.manual_seed(seed)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed(seed)
+            losses.append(self.evaluate(eval_dataset, num_batches, stochastic=True))
+        mean, std = float(np.mean(losses)), float(np.std(losses))
+        print(f"  Multi-seed eval ({n} seeds): loss={mean:.4f} ± {std:.4f}")
+        return mean, std
 
     def save_model(self, output_dir: str):
         os.makedirs(output_dir, exist_ok=True)
@@ -781,6 +918,7 @@ class HybridPipeline:
         torch.cuda.empty_cache()
         torch.cuda.reset_peak_memory_stats()
         print("\n" + "="*80 + "\nPHASE 3: Hybrid KD+RL Refinement\n" + "="*80)
+        self.ref_config.model_pair_key = self.key
         refiner = RefinementTrainer(
             distilled_model_hf_path=distilled_path,
             teacher_model_hf_path=teacher_path,
@@ -808,42 +946,6 @@ class HybridPipeline:
         refined_path = self.run_phase3(teacher_path, distilled_path)
         return {"teacher": teacher_path, "distilled": distilled_path, "refined": refined_path}
     
-
-MODEL_PAIR_KEY = "meditron_phi4mini"
-#llama_8b_1b llama_3b_1b
-model_pair = MODEL_PAIRS[MODEL_PAIR_KEY]
-
-qlora_cfg = QLoRAConfig(
-    lora_r=4, lora_alpha=8,
-    target_modules=["q_proj", "v_proj"],
-    lora_dropout=0.05, learning_rate=1e-4,
-    epochs=3, batch_size=1, use_4bit=True,
-    gradient_accumulation_steps=8,
-    teacher_model=model_pair.teacher_name,
-    student_model=model_pair.student_name
-)
-
-distill_cfg = DistillationConfig(
-    temperature=2.0, alpha=0.5,
-    load_in_8bit=True, llm_int8_threshold=6.0,
-    learning_rate=5e-5, epochs=3, batch_size=1,
-    gradient_accumulation_steps=6,
-    max_grad_norm=1.0,
-    warmup_steps=50,
-    #student_lora_target_modules=["qkv_proj", "o_proj"], #set for  Phi-4-mini
-)
-
-refine_cfg = RefinementConfig(
-    lora_r=16, lora_alpha=32, lora_dropout=0.05,
-    learning_rate=2e-4, num_epochs=2, warmup_steps=50,
-    layer_selection_strategy="performance_based",
-    use_teacher_guidance=True, teacher_guidance_weight=0.3,
-    use_rl=True, rl_beta=0.1, rl_reward_type="teacher_agreement",
-    use_dynamic_ranks=True,
-    lora_r_high=32, lora_r_medium=16, lora_r_low=8, lora_r_minimal=4,
-    use_teacher_agreement_reward=True, agreement_weight=0.3, kl_reward_weight=0.2,
-    use_8bit_teacher=True, device="cuda:0"
-)
 
 
 pipeline = HybridPipeline(
