@@ -1,0 +1,11 @@
+{
+  "weights": {
+    "rougeL": 0.0,
+    "bert_f1": 0.021243878354431405,
+    "judge_criteria_mean": 0.468123571507925,
+    "judge_overall": 0.5106325501376435
+  },
+  "n": 71,
+  "spearman_fit": 0.6128903204493903,
+  "note": "fitted in-sample; report cross-validated agreement before relying on it"
+}

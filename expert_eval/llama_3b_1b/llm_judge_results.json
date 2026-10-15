@@ -1,0 +1,119 @@
+{
+  "n_items": 60,
+  "raters": [
+    "openai",
+    "sonnet"
+  ],
+  "krippendorff_alpha": {
+    "clinical_coherence": 0.2153846153846154,
+    "diagnostic_accuracy": 0.0,
+    "treatment_completeness": NaN,
+    "patient_safety": -0.04938271604938271,
+    "clinical_relevance": 0.33766233766233766,
+    "overall": -0.2142857142857142,
+    "unsafe_flag": -0.2340740740740741
+  },
+  "expert_by_system": {
+    "A0_tuned_teacher": {
+      "clinical_coherence": 2.0,
+      "diagnostic_accuracy": 1.4,
+      "treatment_completeness": 2.2,
+      "patient_safety": 2.2,
+      "clinical_relevance": 2.0,
+      "overall": 1.8,
+      "unsafe_flag": 0.2
+    },
+    "A0b_base_teacher": {
+      "clinical_coherence": 3.0,
+      "diagnostic_accuracy": 2.0,
+      "treatment_completeness": 3.0,
+      "patient_safety": 3.0,
+      "clinical_relevance": 3.0,
+      "overall": 3.0,
+      "unsafe_flag": 0.0
+    },
+    "B1_student_sft": {
+      "clinical_coherence": 1.389,
+      "diagnostic_accuracy": 1.111,
+      "treatment_completeness": 1.222,
+      "patient_safety": 2.111,
+      "clinical_relevance": 1.389,
+      "overall": 1.222,
+      "unsafe_flag": 0.4
+    },
+    "R0_distill_plus_sft": {
+      "clinical_coherence": 1.056,
+      "diagnostic_accuracy": 1.0,
+      "treatment_completeness": 1.0,
+      "patient_safety": 2.0,
+      "clinical_relevance": 1.056,
+      "overall": 1.056,
+      "unsafe_flag": 0.35
+    },
+    "R2_reward_accuracy": {
+      "clinical_coherence": 1.0,
+      "diagnostic_accuracy": 1.25,
+      "treatment_completeness": 1.0,
+      "patient_safety": 1.688,
+      "clinical_relevance": 1.0,
+      "overall": 1.0,
+      "unsafe_flag": 0.25
+    },
+    "R4_degradation_ranks": {
+      "clinical_coherence": 1.167,
+      "diagnostic_accuracy": 1.167,
+      "treatment_completeness": 1.111,
+      "patient_safety": 1.778,
+      "clinical_relevance": 1.278,
+      "overall": 1.167,
+      "unsafe_flag": 0.3
+    }
+  },
+  "judge_expert_correlation": {
+    "clinical_coherence~judge_clinical_coherence": {
+      "n": 68,
+      "spearman": 0.6609459989074465,
+      "kendall_tau_b": 0.6378479646021205
+    },
+    "diagnostic_accuracy~judge_diagnostic_accuracy": {
+      "n": 68,
+      "spearman": 0.27472535935637077,
+      "kendall_tau_b": 0.27289739758606124
+    },
+    "treatment_completeness~judge_treatment_completeness": {
+      "n": 68,
+      "spearman": 0.7673398463820051,
+      "kendall_tau_b": 0.7575092955465346
+    },
+    "patient_safety~judge_patient_safety": {
+      "n": 68,
+      "spearman": 0.15481766198893093,
+      "kendall_tau_b": 0.14561100416184197
+    },
+    "clinical_relevance~judge_clinical_relevance": {
+      "n": 68,
+      "spearman": 0.5857658494559049,
+      "kendall_tau_b": 0.5591790347187627
+    },
+    "overall~judge_overall": {
+      "n": 68,
+      "spearman": 0.5934186084534187,
+      "kendall_tau_b": 0.5196985390576733
+    },
+    "overall~judge_criteria_mean": {
+      "n": 68,
+      "spearman": 0.5464381470748907,
+      "kendall_tau_b": 0.48678687661063863
+    },
+    "overall~clinical_msk_score": {
+      "n": 68,
+      "spearman": 0.4060158695823579,
+      "kendall_tau_b": 0.33653887326720927
+    },
+    "unsafe_flag~judge_unsafe": {
+      "n": 100,
+      "spearman": 0.1499481334024089,
+      "kendall_tau_b": 0.1485557493442389
+    }
+  }
+}

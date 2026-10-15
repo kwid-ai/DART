@@ -1,0 +1,305 @@
+{
+  "selected_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "rank_map": {
+    "0": 16,
+    "1": 16,
+    "2": 16,
+    "3": 16,
+    "4": 16,
+    "5": 16,
+    "6": 16,
+    "7": 16,
+    "8": 16,
+    "9": 16,
+    "10": 16,
+    "11": 16,
+    "12": 16,
+    "13": 16,
+    "14": 16,
+    "15": 16
+  },
+  "trainable_params": 1703936,
+  "budget_params": 1703936,
+  "target_modules": [
+    "model.layers.0.self_attn.q_proj",
+    "model.layers.0.self_attn.v_proj",
+    "model.layers.1.self_attn.q_proj",
+    "model.layers.1.self_attn.v_proj",
+    "model.layers.2.self_attn.q_proj",
+    "model.layers.2.self_attn.v_proj",
+    "model.layers.3.self_attn.q_proj",
+    "model.layers.3.self_attn.v_proj",
+    "model.layers.4.self_attn.q_proj",
+    "model.layers.4.self_attn.v_proj",
+    "model.layers.5.self_attn.q_proj",
+    "model.layers.5.self_attn.v_proj",
+    "model.layers.6.self_attn.q_proj",
+    "model.layers.6.self_attn.v_proj",
+    "model.layers.7.self_attn.q_proj",
+    "model.layers.7.self_attn.v_proj",
+    "model.layers.8.self_attn.q_proj",
+    "model.layers.8.self_attn.v_proj",
+    "model.layers.9.self_attn.q_proj",
+    "model.layers.9.self_attn.v_proj",
+    "model.layers.10.self_attn.q_proj",
+    "model.layers.10.self_attn.v_proj",
+    "model.layers.11.self_attn.q_proj",
+    "model.layers.11.self_attn.v_proj",
+    "model.layers.12.self_attn.q_proj",
+    "model.layers.12.self_attn.v_proj",
+    "model.layers.13.self_attn.q_proj",
+    "model.layers.13.self_attn.v_proj",
+    "model.layers.14.self_attn.q_proj",
+    "model.layers.14.self_attn.v_proj",
+    "model.layers.15.self_attn.q_proj",
+    "model.layers.15.self_attn.v_proj"
+  ],
+  "config": {
+    "hf_token": null,
+    "seed": 0,
+    "max_seq_length": 1024,
+    "learning_rate": 0.0002,
+    "num_epochs": 2,
+    "max_steps": null,
+    "warmup_steps": 50,
+    "max_grad_norm": 1.0,
+    "weight_decay": 0.01,
+    "gradient_accumulation_steps": 1,
+    "device": "cuda:0",
+    "logging_steps": 10,
+    "lora_r": 16,
+    "lora_alpha_ratio": 2.0,
+    "lora_dropout": 0.05,
+    "lora_r_min": 4,
+    "lora_r_max": 64,
+    "module_types": [
+      "q_proj",
+      "v_proj"
+    ],
+    "rank_allocation": "uniform",
+    "adalora_init_r_ratio": 1.5,
+    "adalora_orth_reg_weight": 0.1,
+    "degradation_metric": "cka",
+    "degradation_num_samples": 32,
+    "degradation_max_tokens": 4096,
+    "layer_scores": null,
+    "layer_selection_strategy": "all",
+    "num_layers_to_refine": null,
+    "layer_indices": null,
+    "use_teacher_guidance": true,
+    "teacher_guidance_weight": 0.3,
+    "kd_temperature": 2.0,
+    "use_reward_weighting": false,
+    "reward_type": "teacher_agreement",
+    "reward_beta": 0.1,
+    "reward_normalization": "advantage",
+    "reward_ema": 0.9,
+    "agreement_weight": 0.3,
+    "kl_reward_weight": 0.2,
+    "model_pair_key": "llama_3b_1b",
+    "use_ted_alignment": false,
+    "ted_weight": 1.0,
+    "teacher_quant": "4bit",
+    "allow_cross_tokenizer_kd": false,
+    "track_every": 25,
+    "track_num_samples": 16,
+    "num_eval_samples": 50
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "step": 304,
+      "train_total": 2.9200369621578015,
+      "train_task": 2.63923305743619,
+      "train_kd": 0.9360129958704898,
+      "train_reward_term": 0.0,
+      "train_ted": 0.0,
+      "train_reward": 0.0,
+      "calib_nll": 2.451034501528057
+    },
+    {
+      "epoch": 2,
+      "step": 608,
+      "train_total": 2.774415483208079,
+      "train_task": 2.49507734904948,
+      "train_kd": 0.9311270796154675,
+      "train_reward_term": 0.0,
+      "train_ted": 0.0,
+      "train_reward": 0.0,
+      "calib_nll": 2.4386300826308123
+    }
+  ],
+  "total_steps": 608,
+  "same_tokenizer": true,
+  "layer_scores": {},
+  "layer_scores_raw": {},
+  "fisher_scores": {},
+  "tracking": [
+    {
+      "step": 0,
+      "golden_nll": 2.558630219482146,
+      "proxy_kl": 0.33044680766607076
+    },
+    {
+      "step": 25,
+      "golden_nll": 2.5420612396940863,
+      "proxy_kl": 0.32454372028412565
+    },
+    {
+      "step": 50,
+      "golden_nll": 2.5236199392965517,
+      "proxy_kl": 0.3253611399887826
+    },
+    {
+      "step": 75,
+      "golden_nll": 2.5093098070103736,
+      "proxy_kl": 0.3320735347060095
+    },
+    {
+      "step": 100,
+      "golden_nll": 2.4994399743013735,
+      "proxy_kl": 0.33378652530278213
+    },
+    {
+      "step": 125,
+      "golden_nll": 2.4863669283819863,
+      "proxy_kl": 0.32972015277487826
+    },
+    {
+      "step": 150,
+      "golden_nll": 2.4831579263649086,
+      "proxy_kl": 0.3418056190843909
+    },
+    {
+      "step": 175,
+      "golden_nll": 2.4825151574849453,
+      "proxy_kl": 0.3405924620823973
+    },
+    {
+      "step": 200,
+      "golden_nll": 2.47279685368249,
+      "proxy_kl": 0.3453610696961299
+    },
+    {
+      "step": 225,
+      "golden_nll": 2.4715402507674304,
+      "proxy_kl": 0.33917182000633644
+    },
+    {
+      "step": 250,
+      "golden_nll": 2.480133348378105,
+      "proxy_kl": 0.3477848545429085
+    },
+    {
+      "step": 275,
+      "golden_nll": 2.465201415556196,
+      "proxy_kl": 0.34371471929065617
+    },
+    {
+      "step": 300,
+      "golden_nll": 2.4673627630139725,
+      "proxy_kl": 0.34514710437457363
+    },
+    {
+      "step": 325,
+      "golden_nll": 2.4601288680254987,
+      "proxy_kl": 0.3492056080305267
+    },
+    {
+      "step": 350,
+      "golden_nll": 2.4605695616090753,
+      "proxy_kl": 0.3534355281302926
+    },
+    {
+      "step": 375,
+      "golden_nll": 2.4579497406614603,
+      "proxy_kl": 0.35375793709717257
+    },
+    {
+      "step": 400,
+      "golden_nll": 2.459064205400828,
+      "proxy_kl": 0.35392485917579153
+    },
+    {
+      "step": 425,
+      "golden_nll": 2.4590815718208976,
+      "proxy_kl": 0.35862845412582034
+    },
+    {
+      "step": 450,
+      "golden_nll": 2.4591388901957094,
+      "proxy_kl": 0.36056907001993554
+    },
+    {
+      "step": 475,
+      "golden_nll": 2.4591422807824848,
+      "proxy_kl": 0.35781185450211117
+    },
+    {
+      "step": 500,
+      "golden_nll": 2.4601043988315063,
+      "proxy_kl": 0.36132299547407204
+    },
+    {
+      "step": 525,
+      "golden_nll": 2.457511178828919,
+      "proxy_kl": 0.36009082729582237
+    },
+    {
+      "step": 550,
+      "golden_nll": 2.455337739197168,
+      "proxy_kl": 0.3608024152096026
+    },
+    {
+      "step": 575,
+      "golden_nll": 2.4537149161560263,
+      "proxy_kl": 0.3605610702106905
+    },
+    {
+      "step": 600,
+      "golden_nll": 2.454374233672257,
+      "proxy_kl": 0.3595847041166318
+    },
+    {
+      "step": 608,
+      "golden_nll": 2.4540179555919504,
+      "proxy_kl": 0.35963826780710445
+    }
+  ],
+  "teacher_hacking": {
+    "n_checkpoints": 26,
+    "golden_key": "golden_nll",
+    "divergent_intervals": [
+      [
+        450,
+        475
+      ],
+      [
+        575,
+        600
+      ]
+    ],
+    "frac_divergent_intervals": 0.08,
+    "best_golden_step": 575,
+    "proxy_change_after_best": -0.0009228024035860538,
+    "golden_change_after_best": -0.00030303943592402405,
+    "verdict": "teacher hacking pattern: proxy kept improving after golden peaked"
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "model_pair": "qwen_3b_0.5b",
+  "pair": {
+    "teacher_name": "Qwen/Qwen2.5-3B-Instruct",
+    "student_name": "Qwen/Qwen2.5-0.5B-Instruct",
+    "teacher_size": "3B",
+    "student_size": "0.5B",
+    "tuned_teacher": "./models/qwen_3b_0.5b/phase1_teacher",
+    "distilled_student": "./models/qwen_3b_0.5b/phase2_student",
+    "distilled_student_base_teacher": "./models/qwen_3b_0.5b/phase2_student_base_teacher",
+    "agreement_weight": 0.25,
+    "kl_reward_weight": 0.15
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "splits": {
+    "seed": 13,
+    "fractions": [
+      0.7,
+      0.1,
+      0.2
+    ],
+    "data_sha256": "d290b3244121c4fee28138489268fe9d681f5603d2f2ef710a12092a74b47e9d",
+    "n_rows": 404,
+    "n_conditions": 124
+  },
+  "split_sizes": {
+    "train": 304,
+    "calibration": 21,
+    "test": 79
+  },
+  "generation": {
+    "max_new_tokens": 1024,
+    "k_samples": 1,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "do_sample": true,
+    "prompt": "tokenizer chat template (shared.build_prompt)",
+    "sample_seed": "1000*seed + 10*case_id + sample_idx",
+    "bertscore_model": "distilbert-base-uncased"
+  },
+  "judge": null,
+  "judge_limit": null,
+  "judge_k": 1,
+  "qlora_config": {
+    "lora_r": 8,
+    "lora_alpha": 8,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ],
+    "lora_dropout": 0.05,
+    "learning_rate": 0.0001,
+    "epochs": 3,
+    "batch_size": 1,
+    "use_4bit": true,
+    "gradient_accumulation_steps": 8,
+    "max_seq_length": 1024,
+    "teacher_model": "google/medgemma-1.5-4b-it",
+    "student_model": "google/gemma-3-270m-it",
+    "seed": 42
+  },
+  "distill_config": {
+    "temperature": 2.0,
+    "alpha": 0.5,
+    "load_in_8bit": true,
+    "llm_int8_threshold": 6.0,
+    "learning_rate": 5e-05,
+    "epochs": 3,
+    "batch_size": 1,
+    "use_4bit": true,
+    "gradient_accumulation_steps": 6,
+    "max_grad_norm": 1.0,
+    "warmup_steps": 50,
+    "use_student_lora": true,
+    "student_lora_r": 8,
+    "student_lora_alpha": 16,
+    "student_lora_target_modules": null,
+    "top_k_logits": 50,
+    "max_seq_length": 1024,
+    "seed": 42,
+    "allow_cross_tokenizer_kd": false,
+    "track_every": 25,
+    "track_num_samples": 16
+  },
+  "refinement_base_config": {
+    "hf_token": null,
+    "seed": 0,
+    "max_seq_length": 1024,
+    "learning_rate": 0.0002,
+    "num_epochs": 2,
+    "max_steps": null,
+    "warmup_steps": 50,
+    "max_grad_norm": 1.0,
+    "weight_decay": 0.01,
+    "gradient_accumulation_steps": 1,
+    "device": "cuda:0",
+    "logging_steps": 10,
+    "lora_r": 16,
+    "lora_alpha_ratio": 2.0,
+    "lora_dropout": 0.05,
+    "lora_r_min": 4,
+    "lora_r_max": 64,
+    "module_types": [
+      "q_proj",
+      "v_proj"
+    ],
+    "rank_allocation": "degradation",
+    "adalora_init_r_ratio": 1.5,
+    "adalora_orth_reg_weight": 0.1,
+    "degradation_metric": "cka",
+    "degradation_num_samples": 32,
+    "degradation_max_tokens": 4096,
+    "layer_scores": null,
+    "layer_selection_strategy": "all",
+    "num_layers_to_refine": null,
+    "layer_indices": null,
+    "use_teacher_guidance": true,
+    "teacher_guidance_weight": 0.3,
+    "kd_temperature": 2.0,
+    "use_reward_weighting": true,
+    "reward_type": "teacher_agreement",
+    "reward_beta": 0.1,
+    "reward_normalization": "advantage",
+    "reward_ema": 0.9,
+    "agreement_weight": 0.3,
+    "kl_reward_weight": 0.2,
+    "model_pair_key": "",
+    "use_ted_alignment": false,
+    "ted_weight": 1.0,
+    "teacher_quant": "4bit",
+    "allow_cross_tokenizer_kd": false,
+    "track_every": 25,
+    "track_num_samples": 16,
+    "num_eval_samples": 50
+  },
+  "ablation_configs": [
+    {
+      "name": "C_ted_lite",
+      "description": "R1 + TED-style learned per-layer hidden-state alignment",
+      "source": "distilled",
+      "method": "refine",
+      "overrides": {
+        "use_teacher_guidance": true,
+        "use_reward_weighting": false,
+        "use_ted_alignment": true,
+        "layer_selection_strategy": "all",
+        "rank_allocation": "uniform"
+      },
+      "match_pipeline_epochs": false
+    }
+  ],
+  "versions": {
+    "python": "3.11.5",
+    "torch": "2.11.0",
+    "transformers": "5.8.0.dev0",
+    "peft": "0.19.1"
+  },
+  "gpu": "NVIDIA H100 80GB HBM3"
+}

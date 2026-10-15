@@ -1,0 +1,341 @@
+{
+  "selected_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "rank_map": {
+    "0": 16,
+    "1": 16,
+    "2": 16,
+    "3": 16,
+    "4": 16,
+    "5": 16,
+    "6": 16,
+    "7": 16,
+    "8": 16,
+    "9": 16,
+    "10": 16,
+    "11": 16,
+    "12": 16,
+    "13": 16,
+    "14": 16,
+    "15": 16,
+    "16": 16,
+    "17": 16,
+    "18": 16,
+    "19": 16,
+    "20": 16,
+    "21": 16,
+    "22": 16,
+    "23": 16
+  },
+  "trainable_params": 1623168,
+  "budget_params": 1081344,
+  "target_modules": [
+    "model.layers.0.self_attn.q_proj",
+    "model.layers.0.self_attn.v_proj",
+    "model.layers.1.self_attn.q_proj",
+    "model.layers.1.self_attn.v_proj",
+    "model.layers.2.self_attn.q_proj",
+    "model.layers.2.self_attn.v_proj",
+    "model.layers.3.self_attn.q_proj",
+    "model.layers.3.self_attn.v_proj",
+    "model.layers.4.self_attn.q_proj",
+    "model.layers.4.self_attn.v_proj",
+    "model.layers.5.self_attn.q_proj",
+    "model.layers.5.self_attn.v_proj",
+    "model.layers.6.self_attn.q_proj",
+    "model.layers.6.self_attn.v_proj",
+    "model.layers.7.self_attn.q_proj",
+    "model.layers.7.self_attn.v_proj",
+    "model.layers.8.self_attn.q_proj",
+    "model.layers.8.self_attn.v_proj",
+    "model.layers.9.self_attn.q_proj",
+    "model.layers.9.self_attn.v_proj",
+    "model.layers.10.self_attn.q_proj",
+    "model.layers.10.self_attn.v_proj",
+    "model.layers.11.self_attn.q_proj",
+    "model.layers.11.self_attn.v_proj",
+    "model.layers.12.self_attn.q_proj",
+    "model.layers.12.self_attn.v_proj",
+    "model.layers.13.self_attn.q_proj",
+    "model.layers.13.self_attn.v_proj",
+    "model.layers.14.self_attn.q_proj",
+    "model.layers.14.self_attn.v_proj",
+    "model.layers.15.self_attn.q_proj",
+    "model.layers.15.self_attn.v_proj",
+    "model.layers.16.self_attn.q_proj",
+    "model.layers.16.self_attn.v_proj",
+    "model.layers.17.self_attn.q_proj",
+    "model.layers.17.self_attn.v_proj",
+    "model.layers.18.self_attn.q_proj",
+    "model.layers.18.self_attn.v_proj",
+    "model.layers.19.self_attn.q_proj",
+    "model.layers.19.self_attn.v_proj",
+    "model.layers.20.self_attn.q_proj",
+    "model.layers.20.self_attn.v_proj",
+    "model.layers.21.self_attn.q_proj",
+    "model.layers.21.self_attn.v_proj",
+    "model.layers.22.self_attn.q_proj",
+    "model.layers.22.self_attn.v_proj",
+    "model.layers.23.self_attn.q_proj",
+    "model.layers.23.self_attn.v_proj"
+  ],
+  "config": {
+    "hf_token": null,
+    "seed": 2,
+    "max_seq_length": 1024,
+    "learning_rate": 0.0002,
+    "num_epochs": 2,
+    "max_steps": null,
+    "warmup_steps": 50,
+    "max_grad_norm": 1.0,
+    "weight_decay": 0.01,
+    "gradient_accumulation_steps": 1,
+    "device": "cuda:0",
+    "logging_steps": 10,
+    "lora_r": 16,
+    "lora_alpha_ratio": 2.0,
+    "lora_dropout": 0.05,
+    "lora_r_min": 4,
+    "lora_r_max": 64,
+    "module_types": [
+      "q_proj",
+      "v_proj"
+    ],
+    "rank_allocation": "adalora",
+    "adalora_init_r_ratio": 1.5,
+    "adalora_orth_reg_weight": 0.1,
+    "degradation_metric": "cka",
+    "degradation_num_samples": 32,
+    "degradation_max_tokens": 4096,
+    "layer_scores": null,
+    "layer_selection_strategy": "all",
+    "num_layers_to_refine": null,
+    "layer_indices": null,
+    "use_teacher_guidance": true,
+    "teacher_guidance_weight": 0.3,
+    "kd_temperature": 2.0,
+    "use_reward_weighting": true,
+    "reward_type": "teacher_agreement",
+    "reward_beta": 0.1,
+    "reward_normalization": "advantage",
+    "reward_ema": 0.9,
+    "agreement_weight": 0.3,
+    "kl_reward_weight": 0.2,
+    "model_pair_key": "qwen_3b_0.5b",
+    "use_ted_alignment": false,
+    "ted_weight": 1.0,
+    "teacher_quant": "4bit",
+    "allow_cross_tokenizer_kd": false,
+    "track_every": 25,
+    "track_num_samples": 16,
+    "num_eval_samples": 50
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "step": 304,
+      "train_total": 3.458537814648528,
+      "train_task": 2.7923026959362782,
+      "train_kd": 1.7921146793585074,
+      "train_reward_term": -0.2528227703112766,
+      "train_ted": 0.0,
+      "train_reward": 0.543356852507905,
+      "calib_nll": 2.5795825967421897
+    },
+    {
+      "epoch": 2,
+      "step": 608,
+      "train_total": 3.3428842331233777,
+      "train_task": 2.7816729055423486,
+      "train_kd": 1.6980489735540591,
+      "train_reward_term": -0.3299954271877045,
+      "train_ted": 0.0,
+      "train_reward": 0.5445888883581287,
+      "calib_nll": 2.5745136068417476
+    }
+  ],
+  "total_steps": 608,
+  "same_tokenizer": true,
+  "layer_scores": {},
+  "layer_scores_raw": {},
+  "fisher_scores": {},
+  "tracking": [
+    {
+      "step": 0,
+      "golden_nll": 2.60142781557266,
+      "proxy_kl": 0.4719216546545974
+    },
+    {
+      "step": 25,
+      "golden_nll": 2.601933146870794,
+      "proxy_kl": 0.47184281871870387
+    },
+    {
+      "step": 50,
+      "golden_nll": 2.601626209494635,
+      "proxy_kl": 0.47195732124685724
+    },
+    {
+      "step": 75,
+      "golden_nll": 2.5990116284249054,
+      "proxy_kl": 0.46943924796764885
+    },
+    {
+      "step": 100,
+      "golden_nll": 2.5946524203474324,
+      "proxy_kl": 0.4629635052847117
+    },
+    {
+      "step": 125,
+      "golden_nll": 2.5943605341111953,
+      "proxy_kl": 0.4587681129835496
+    },
+    {
+      "step": 150,
+      "golden_nll": 2.597988479497883,
+      "proxy_kl": 0.4604870188801353
+    },
+    {
+      "step": 175,
+      "golden_nll": 2.597949989105494,
+      "proxy_kl": 0.46052874038443004
+    },
+    {
+      "step": 200,
+      "golden_nll": 2.5992891024416545,
+      "proxy_kl": 0.4611171210705298
+    },
+    {
+      "step": 225,
+      "golden_nll": 2.599169505663975,
+      "proxy_kl": 0.46101632452660013
+    },
+    {
+      "step": 250,
+      "golden_nll": 2.5977945580189408,
+      "proxy_kl": 0.4610573660370051
+    },
+    {
+      "step": 275,
+      "golden_nll": 2.598083413946837,
+      "proxy_kl": 0.46131375339759634
+    },
+    {
+      "step": 300,
+      "golden_nll": 2.599073795383066,
+      "proxy_kl": 0.4626039801931745
+    },
+    {
+      "step": 325,
+      "golden_nll": 2.598401568940318,
+      "proxy_kl": 0.46181876523551413
+    },
+    {
+      "step": 350,
+      "golden_nll": 2.5980601481156302,
+      "proxy_kl": 0.4614456037564432
+    },
+    {
+      "step": 375,
+      "golden_nll": 2.595723031935215,
+      "proxy_kl": 0.4611003014901231
+    },
+    {
+      "step": 400,
+      "golden_nll": 2.596350935554761,
+      "proxy_kl": 0.46184452856105773
+    },
+    {
+      "step": 425,
+      "golden_nll": 2.5965631575404,
+      "proxy_kl": 0.4619677523531257
+    },
+    {
+      "step": 450,
+      "golden_nll": 2.5961877917858343,
+      "proxy_kl": 0.4624652146615664
+    },
+    {
+      "step": 475,
+      "golden_nll": 2.5950366944783254,
+      "proxy_kl": 0.46200762897466924
+    },
+    {
+      "step": 500,
+      "golden_nll": 2.594767416897992,
+      "proxy_kl": 0.46203961264700283
+    },
+    {
+      "step": 525,
+      "golden_nll": 2.595148030927546,
+      "proxy_kl": 0.4619525346375196
+    },
+    {
+      "step": 550,
+      "golden_nll": 2.5948898523078827,
+      "proxy_kl": 0.4621467653083145
+    },
+    {
+      "step": 575,
+      "golden_nll": 2.5943642672320126,
+      "proxy_kl": 0.46213605312269257
+    },
+    {
+      "step": 600,
+      "golden_nll": 2.595081784006047,
+      "proxy_kl": 0.46205348634784027
+    },
+    {
+      "step": 608,
+      "golden_nll": 2.5949093758908375,
+      "proxy_kl": 0.46214813784631675
+    }
+  ],
+  "teacher_hacking": {
+    "n_checkpoints": 26,
+    "golden_key": "golden_nll",
+    "divergent_intervals": [
+      [
+        0,
+        25
+      ],
+      [
+        500,
+        525
+      ],
+      [
+        575,
+        600
+      ]
+    ],
+    "frac_divergent_intervals": 0.12,
+    "best_golden_step": 125,
+    "proxy_change_after_best": 0.0033800248627671725,
+    "golden_change_after_best": -0.0005488417796422063,
+    "verdict": "no sustained proxy/golden divergence"
+  }
+}

@@ -1,0 +1,328 @@
+{
+  "selected_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "rank_map": {
+    "0": 16,
+    "1": 16,
+    "2": 16,
+    "3": 16,
+    "4": 16,
+    "5": 16,
+    "6": 16,
+    "7": 16,
+    "8": 16,
+    "9": 16,
+    "10": 16,
+    "11": 16,
+    "12": 16,
+    "13": 16,
+    "14": 16,
+    "15": 16,
+    "16": 16,
+    "17": 16,
+    "18": 16,
+    "19": 16,
+    "20": 16,
+    "21": 16,
+    "22": 16,
+    "23": 16
+  },
+  "trainable_params": 1081344,
+  "budget_params": 1081344,
+  "target_modules": [
+    "model.layers.0.self_attn.q_proj",
+    "model.layers.0.self_attn.v_proj",
+    "model.layers.1.self_attn.q_proj",
+    "model.layers.1.self_attn.v_proj",
+    "model.layers.2.self_attn.q_proj",
+    "model.layers.2.self_attn.v_proj",
+    "model.layers.3.self_attn.q_proj",
+    "model.layers.3.self_attn.v_proj",
+    "model.layers.4.self_attn.q_proj",
+    "model.layers.4.self_attn.v_proj",
+    "model.layers.5.self_attn.q_proj",
+    "model.layers.5.self_attn.v_proj",
+    "model.layers.6.self_attn.q_proj",
+    "model.layers.6.self_attn.v_proj",
+    "model.layers.7.self_attn.q_proj",
+    "model.layers.7.self_attn.v_proj",
+    "model.layers.8.self_attn.q_proj",
+    "model.layers.8.self_attn.v_proj",
+    "model.layers.9.self_attn.q_proj",
+    "model.layers.9.self_attn.v_proj",
+    "model.layers.10.self_attn.q_proj",
+    "model.layers.10.self_attn.v_proj",
+    "model.layers.11.self_attn.q_proj",
+    "model.layers.11.self_attn.v_proj",
+    "model.layers.12.self_attn.q_proj",
+    "model.layers.12.self_attn.v_proj",
+    "model.layers.13.self_attn.q_proj",
+    "model.layers.13.self_attn.v_proj",
+    "model.layers.14.self_attn.q_proj",
+    "model.layers.14.self_attn.v_proj",
+    "model.layers.15.self_attn.q_proj",
+    "model.layers.15.self_attn.v_proj",
+    "model.layers.16.self_attn.q_proj",
+    "model.layers.16.self_attn.v_proj",
+    "model.layers.17.self_attn.q_proj",
+    "model.layers.17.self_attn.v_proj",
+    "model.layers.18.self_attn.q_proj",
+    "model.layers.18.self_attn.v_proj",
+    "model.layers.19.self_attn.q_proj",
+    "model.layers.19.self_attn.v_proj",
+    "model.layers.20.self_attn.q_proj",
+    "model.layers.20.self_attn.v_proj",
+    "model.layers.21.self_attn.q_proj",
+    "model.layers.21.self_attn.v_proj",
+    "model.layers.22.self_attn.q_proj",
+    "model.layers.22.self_attn.v_proj",
+    "model.layers.23.self_attn.q_proj",
+    "model.layers.23.self_attn.v_proj"
+  ],
+  "config": {
+    "hf_token": null,
+    "seed": 2,
+    "max_seq_length": 1024,
+    "learning_rate": 0.0002,
+    "num_epochs": 2,
+    "max_steps": null,
+    "warmup_steps": 50,
+    "max_grad_norm": 1.0,
+    "weight_decay": 0.01,
+    "gradient_accumulation_steps": 1,
+    "device": "cuda:0",
+    "logging_steps": 10,
+    "lora_r": 16,
+    "lora_alpha_ratio": 2.0,
+    "lora_dropout": 0.05,
+    "lora_r_min": 4,
+    "lora_r_max": 64,
+    "module_types": [
+      "q_proj",
+      "v_proj"
+    ],
+    "rank_allocation": "uniform",
+    "adalora_init_r_ratio": 1.5,
+    "adalora_orth_reg_weight": 0.1,
+    "degradation_metric": "cka",
+    "degradation_num_samples": 32,
+    "degradation_max_tokens": 4096,
+    "layer_scores": null,
+    "layer_selection_strategy": "all",
+    "num_layers_to_refine": null,
+    "layer_indices": null,
+    "use_teacher_guidance": true,
+    "teacher_guidance_weight": 0.3,
+    "kd_temperature": 2.0,
+    "use_reward_weighting": true,
+    "reward_type": "teacher_agreement",
+    "reward_beta": 0.1,
+    "reward_normalization": "advantage",
+    "reward_ema": 0.9,
+    "agreement_weight": 0.3,
+    "kl_reward_weight": 0.2,
+    "model_pair_key": "qwen_3b_0.5b",
+    "use_ted_alignment": false,
+    "ted_weight": 1.0,
+    "teacher_quant": "4bit",
+    "allow_cross_tokenizer_kd": false,
+    "track_every": 25,
+    "track_num_samples": 16,
+    "num_eval_samples": 50
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "step": 304,
+      "train_total": 3.2307761750723185,
+      "train_task": 2.748077683542904,
+      "train_kd": 1.6885664898313975,
+      "train_reward_term": -0.23871476611882253,
+      "train_ted": 0.0,
+      "train_reward": 0.5478537722833847,
+      "calib_nll": 2.53346643447876
+    },
+    {
+      "epoch": 2,
+      "step": 608,
+      "train_total": 3.102976458637338,
+      "train_task": 2.6409217307442114,
+      "train_kd": 1.6436240735806917,
+      "train_reward_term": -0.31032514446920495,
+      "train_ted": 0.0,
+      "train_reward": 0.5624414222609055,
+      "calib_nll": 2.525137823361617
+    }
+  ],
+  "total_steps": 608,
+  "same_tokenizer": true,
+  "layer_scores": {},
+  "layer_scores_raw": {},
+  "fisher_scores": {},
+  "tracking": [
+    {
+      "step": 0,
+      "golden_nll": 2.60142781557266,
+      "proxy_kl": 0.4719216546545974
+    },
+    {
+      "step": 25,
+      "golden_nll": 2.590082450673882,
+      "proxy_kl": 0.46030721982462763
+    },
+    {
+      "step": 50,
+      "golden_nll": 2.595220082897553,
+      "proxy_kl": 0.46293700720066977
+    },
+    {
+      "step": 75,
+      "golden_nll": 2.58822238899871,
+      "proxy_kl": 0.4655796585550789
+    },
+    {
+      "step": 100,
+      "golden_nll": 2.585458063234284,
+      "proxy_kl": 0.4648885120809996
+    },
+    {
+      "step": 125,
+      "golden_nll": 2.580181520580978,
+      "proxy_kl": 0.4674128810083347
+    },
+    {
+      "step": 150,
+      "golden_nll": 2.5772378133411844,
+      "proxy_kl": 0.4712179545349331
+    },
+    {
+      "step": 175,
+      "golden_nll": 2.572593838426588,
+      "proxy_kl": 0.4658814332259509
+    },
+    {
+      "step": 200,
+      "golden_nll": 2.5642306255228196,
+      "proxy_kl": 0.4678688933536649
+    },
+    {
+      "step": 225,
+      "golden_nll": 2.5612601566443054,
+      "proxy_kl": 0.4681503092813014
+    },
+    {
+      "step": 250,
+      "golden_nll": 2.560180937885543,
+      "proxy_kl": 0.4695187616155735
+    },
+    {
+      "step": 275,
+      "golden_nll": 2.563862324402759,
+      "proxy_kl": 0.4719198097718463
+    },
+    {
+      "step": 300,
+      "golden_nll": 2.555226402003187,
+      "proxy_kl": 0.46991252257397165
+    },
+    {
+      "step": 325,
+      "golden_nll": 2.554697594942846,
+      "proxy_kl": 0.47050828165014674
+    },
+    {
+      "step": 350,
+      "golden_nll": 2.5515249077471913,
+      "proxy_kl": 0.4726224317132794
+    },
+    {
+      "step": 375,
+      "golden_nll": 2.551219485525203,
+      "proxy_kl": 0.4743346711597012
+    },
+    {
+      "step": 400,
+      "golden_nll": 2.550437948923751,
+      "proxy_kl": 0.4755824565245678
+    },
+    {
+      "step": 425,
+      "golden_nll": 2.5509470133427032,
+      "proxy_kl": 0.476308314633045
+    },
+    {
+      "step": 450,
+      "golden_nll": 2.5489397991643066,
+      "proxy_kl": 0.47556841054339927
+    },
+    {
+      "step": 475,
+      "golden_nll": 2.5465371206199996,
+      "proxy_kl": 0.47490383060912267
+    },
+    {
+      "step": 500,
+      "golden_nll": 2.5493667075429705,
+      "proxy_kl": 0.47645775812239466
+    },
+    {
+      "step": 525,
+      "golden_nll": 2.548512726491817,
+      "proxy_kl": 0.476453974800686
+    },
+    {
+      "step": 550,
+      "golden_nll": 2.5484261984102785,
+      "proxy_kl": 0.47684304768040486
+    },
+    {
+      "step": 575,
+      "golden_nll": 2.5477770552500423,
+      "proxy_kl": 0.47550985348568703
+    },
+    {
+      "step": 600,
+      "golden_nll": 2.5477238057956435,
+      "proxy_kl": 0.4756471495002985
+    },
+    {
+      "step": 608,
+      "golden_nll": 2.5471372585830014,
+      "proxy_kl": 0.4756745215362188
+    }
+  ],
+  "teacher_hacking": {
+    "n_checkpoints": 26,
+    "golden_key": "golden_nll",
+    "divergent_intervals": [],
+    "frac_divergent_intervals": 0.0,
+    "best_golden_step": 475,
+    "proxy_change_after_best": 0.0007706909270961404,
+    "golden_change_after_best": -0.0006001379630018455,
+    "verdict": "no sustained proxy/golden divergence"
+  }
+}

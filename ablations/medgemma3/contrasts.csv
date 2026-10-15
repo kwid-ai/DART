@@ -1,0 +1,13 @@
+contrast,a,b,metric,n_prompts,mean_diff,ci_low,ci_high,p_boot,cohens_dz,p_holm,verdict
+teacher tuning (teacher quality),A0_tuned_teacher,A0b_base_teacher,clinical_msk_score,10,-0.15213,-0.21981075,-0.07923437500000001,0.0002,-1.2700000894144419,0.0018000000000000002,b better
+teacher tuning (student quality),A1_distill_only,A1b_distill_from_base_teacher,clinical_msk_score,10,0.13682,0.12308999999999999,0.15098025000000004,0.0,5.7076990329413535,0.0,a better
+extra Phase-3 training (CE only),R0_distill_plus_sft,A1_distill_only,clinical_msk_score,10,-0.0014966666666666629,-0.008755166666666661,0.005152249999999999,0.6828,-0.12487788664078052,1.0,no significant difference
+distillation vs direct SFT (budget-matched),R0_distill_plus_sft,B1_student_sft,clinical_msk_score,10,0.0057900000000000035,-0.0006250833333333365,0.012546875000000004,0.0866,0.5056504653241486,0.6928,no significant difference
+KD guidance,R1_kd_guidance,R0_distill_plus_sft,clinical_msk_score,10,-0.016523333333333338,-0.02592537500000001,-0.007073166666666659,0.0,-1.010572293180315,0.0,b better
+reward-weighted likelihood (accuracy),R2_reward_accuracy,R1_kd_guidance,clinical_msk_score,10,0.007113333333333344,-0.0013874999999999936,0.016960666666666676,0.12,0.44861175335270503,0.84,no significant difference
+agreement + KL reward terms,R3_reward_agreement,R2_reward_accuracy,clinical_msk_score,10,0.0025533333333333298,-0.006670166666666673,0.009636666666666658,0.5206,0.17972934226926057,1.0,no significant difference
+degradation rank allocation vs uniform,R4_degradation_ranks,R3_reward_agreement,clinical_msk_score,10,0.003246666666666664,-0.0056466666666666636,0.014030083333333325,0.56,0.18952124934297643,1.0,no significant difference
+degradation vs random allocation,R4_degradation_ranks,R4r_random_ranks,clinical_msk_score,10,0.0025466666666666693,-0.004621916666666671,0.009578458333333331,0.49,0.20955237310001584,1.0,no significant difference
+degradation allocation vs AdaLoRA,R4_degradation_ranks,C_adalora,clinical_msk_score,10,0.015148333333333344,0.008456666666666677,0.02188508333333334,0.0,1.3297509849107023,0.0,a better
+full method vs TED-lite,R4_degradation_ranks,C_ted_lite,clinical_msk_score,10,0.0035199999999999928,-0.005843666666666664,0.013283333333333317,0.4728,0.21683557795490185,1.0,no significant difference
+TED-lite alignment,C_ted_lite,R1_kd_guidance,clinical_msk_score,10,0.009393333333333346,-0.0039204166666666545,0.02145666666666669,0.1568,0.4280676105425665,0.9408,no significant difference

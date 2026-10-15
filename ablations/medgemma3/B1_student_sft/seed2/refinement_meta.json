@@ -1,0 +1,546 @@
+{
+  "selected_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "rank_map": {
+    "0": 16,
+    "1": 16,
+    "2": 16,
+    "3": 16,
+    "4": 16,
+    "5": 16,
+    "6": 16,
+    "7": 16,
+    "8": 16,
+    "9": 16,
+    "10": 16,
+    "11": 16,
+    "12": 16,
+    "13": 16,
+    "14": 16,
+    "15": 16,
+    "16": 16,
+    "17": 16
+  },
+  "trainable_params": 737280,
+  "budget_params": 737280,
+  "target_modules": [
+    "model.layers.0.self_attn.q_proj",
+    "model.layers.0.self_attn.v_proj",
+    "model.layers.1.self_attn.q_proj",
+    "model.layers.1.self_attn.v_proj",
+    "model.layers.2.self_attn.q_proj",
+    "model.layers.2.self_attn.v_proj",
+    "model.layers.3.self_attn.q_proj",
+    "model.layers.3.self_attn.v_proj",
+    "model.layers.4.self_attn.q_proj",
+    "model.layers.4.self_attn.v_proj",
+    "model.layers.5.self_attn.q_proj",
+    "model.layers.5.self_attn.v_proj",
+    "model.layers.6.self_attn.q_proj",
+    "model.layers.6.self_attn.v_proj",
+    "model.layers.7.self_attn.q_proj",
+    "model.layers.7.self_attn.v_proj",
+    "model.layers.8.self_attn.q_proj",
+    "model.layers.8.self_attn.v_proj",
+    "model.layers.9.self_attn.q_proj",
+    "model.layers.9.self_attn.v_proj",
+    "model.layers.10.self_attn.q_proj",
+    "model.layers.10.self_attn.v_proj",
+    "model.layers.11.self_attn.q_proj",
+    "model.layers.11.self_attn.v_proj",
+    "model.layers.12.self_attn.q_proj",
+    "model.layers.12.self_attn.v_proj",
+    "model.layers.13.self_attn.q_proj",
+    "model.layers.13.self_attn.v_proj",
+    "model.layers.14.self_attn.q_proj",
+    "model.layers.14.self_attn.v_proj",
+    "model.layers.15.self_attn.q_proj",
+    "model.layers.15.self_attn.v_proj",
+    "model.layers.16.self_attn.q_proj",
+    "model.layers.16.self_attn.v_proj",
+    "model.layers.17.self_attn.q_proj",
+    "model.layers.17.self_attn.v_proj"
+  ],
+  "config": {
+    "hf_token": null,
+    "seed": 2,
+    "max_seq_length": 1024,
+    "learning_rate": 0.0002,
+    "num_epochs": 5,
+    "max_steps": null,
+    "warmup_steps": 50,
+    "max_grad_norm": 1.0,
+    "weight_decay": 0.01,
+    "gradient_accumulation_steps": 1,
+    "device": "cuda:0",
+    "logging_steps": 10,
+    "lora_r": 16,
+    "lora_alpha_ratio": 2.0,
+    "lora_dropout": 0.05,
+    "lora_r_min": 4,
+    "lora_r_max": 64,
+    "module_types": [
+      "q_proj",
+      "v_proj"
+    ],
+    "rank_allocation": "uniform",
+    "adalora_init_r_ratio": 1.5,
+    "adalora_orth_reg_weight": 0.1,
+    "degradation_metric": "cka",
+    "degradation_num_samples": 32,
+    "degradation_max_tokens": 4096,
+    "layer_scores": null,
+    "layer_selection_strategy": "all",
+    "num_layers_to_refine": null,
+    "layer_indices": null,
+    "use_teacher_guidance": false,
+    "teacher_guidance_weight": 0.3,
+    "kd_temperature": 2.0,
+    "use_reward_weighting": false,
+    "reward_type": "teacher_agreement",
+    "reward_beta": 0.1,
+    "reward_normalization": "advantage",
+    "reward_ema": 0.9,
+    "agreement_weight": 0.3,
+    "kl_reward_weight": 0.2,
+    "model_pair_key": "medgemma3",
+    "use_ted_alignment": false,
+    "ted_weight": 1.0,
+    "teacher_quant": "4bit",
+    "allow_cross_tokenizer_kd": false,
+    "track_every": 25,
+    "track_num_samples": 16,
+    "num_eval_samples": 50
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "step": 304,
+      "train_total": 3.28154700955278,
+      "train_task": 3.28154700955278,
+      "train_kd": 0.0,
+      "train_reward_term": 0.0,
+      "train_ted": 0.0,
+      "train_reward": 0.0,
+      "calib_nll": 3.0174702585165525
+    },
+    {
+      "epoch": 2,
+      "step": 608,
+      "train_total": 3.0673079467133473,
+      "train_task": 3.0673079467133473,
+      "train_kd": 0.0,
+      "train_reward_term": 0.0,
+      "train_ted": 0.0,
+      "train_reward": 0.0,
+      "calib_nll": 2.990692822307751
+    },
+    {
+      "epoch": 3,
+      "step": 912,
+      "train_total": 2.968261379552515,
+      "train_task": 2.968261379552515,
+      "train_kd": 0.0,
+      "train_reward_term": 0.0,
+      "train_ted": 0.0,
+      "train_reward": 0.0,
+      "calib_nll": 2.989393736198726
+    },
+    {
+      "epoch": 4,
+      "step": 1216,
+      "train_total": 2.9053160083529197,
+      "train_task": 2.9053160083529197,
+      "train_kd": 0.0,
+      "train_reward_term": 0.0,
+      "train_ted": 0.0,
+      "train_reward": 0.0,
+      "calib_nll": 2.9929000796387677
+    },
+    {
+      "epoch": 5,
+      "step": 1520,
+      "train_total": 2.8658010744930884,
+      "train_task": 2.8658010744930884,
+      "train_kd": 0.0,
+      "train_reward_term": 0.0,
+      "train_ted": 0.0,
+      "train_reward": 0.0,
+      "calib_nll": 2.994297949316075
+    }
+  ],
+  "total_steps": 1520,
+  "same_tokenizer": true,
+  "layer_scores": {},
+  "layer_scores_raw": {},
+  "fisher_scores": {},
+  "tracking": [
+    {
+      "step": 0,
+      "golden_nll": 3.6918811540517074,
+      "proxy_kl": 1.4769828412974595
+    },
+    {
+      "step": 25,
+      "golden_nll": 3.270299128206636,
+      "proxy_kl": 1.052715487026586
+    },
+    {
+      "step": 50,
+      "golden_nll": 3.1356415657458396,
+      "proxy_kl": 0.9441774244563939
+    },
+    {
+      "step": 75,
+      "golden_nll": 3.10819650936739,
+      "proxy_kl": 0.9239478599329327
+    },
+    {
+      "step": 100,
+      "golden_nll": 3.0943522351613812,
+      "proxy_kl": 0.918242768619907
+    },
+    {
+      "step": 125,
+      "golden_nll": 3.0868763090737077,
+      "proxy_kl": 0.9214653807296567
+    },
+    {
+      "step": 150,
+      "golden_nll": 3.0862810823030817,
+      "proxy_kl": 0.9211770795859162
+    },
+    {
+      "step": 175,
+      "golden_nll": 3.0656889078758027,
+      "proxy_kl": 0.9089663482118766
+    },
+    {
+      "step": 200,
+      "golden_nll": 3.0533735168155256,
+      "proxy_kl": 0.9042253677945816
+    },
+    {
+      "step": 225,
+      "golden_nll": 3.0492388815574034,
+      "proxy_kl": 0.905534135222954
+    },
+    {
+      "step": 250,
+      "golden_nll": 3.0440035686221267,
+      "proxy_kl": 0.9009372164214127
+    },
+    {
+      "step": 275,
+      "golden_nll": 3.0446846436753976,
+      "proxy_kl": 0.9013741936387017
+    },
+    {
+      "step": 300,
+      "golden_nll": 3.0381288346166797,
+      "proxy_kl": 0.9037291818364996
+    },
+    {
+      "step": 325,
+      "golden_nll": 3.0317660085337335,
+      "proxy_kl": 0.9024840979793927
+    },
+    {
+      "step": 350,
+      "golden_nll": 3.035084778827439,
+      "proxy_kl": 0.9031393081972444
+    },
+    {
+      "step": 375,
+      "golden_nll": 3.0253896160799942,
+      "proxy_kl": 0.909860990010683
+    },
+    {
+      "step": 400,
+      "golden_nll": 3.0287185656559017,
+      "proxy_kl": 0.9066297165028468
+    },
+    {
+      "step": 425,
+      "golden_nll": 3.024744853138721,
+      "proxy_kl": 0.9105957607775718
+    },
+    {
+      "step": 450,
+      "golden_nll": 3.0154700226805216,
+      "proxy_kl": 0.9043410197543654
+    },
+    {
+      "step": 475,
+      "golden_nll": 3.022600772011175,
+      "proxy_kl": 0.9098794073048979
+    },
+    {
+      "step": 500,
+      "golden_nll": 3.023426293781363,
+      "proxy_kl": 0.9046831607431531
+    },
+    {
+      "step": 525,
+      "golden_nll": 3.0203698336809786,
+      "proxy_kl": 0.9061103659215937
+    },
+    {
+      "step": 550,
+      "golden_nll": 3.016872637685872,
+      "proxy_kl": 0.9001973289887797
+    },
+    {
+      "step": 575,
+      "golden_nll": 3.0099146749144436,
+      "proxy_kl": 0.9006335089790998
+    },
+    {
+      "step": 600,
+      "golden_nll": 3.004494729618086,
+      "proxy_kl": 0.9074774007323606
+    },
+    {
+      "step": 625,
+      "golden_nll": 3.0117803571778605,
+      "proxy_kl": 0.9102028112078617
+    },
+    {
+      "step": 650,
+      "golden_nll": 3.0138183575733573,
+      "proxy_kl": 0.9195774234042344
+    },
+    {
+      "step": 675,
+      "golden_nll": 3.0125798362003957,
+      "proxy_kl": 0.9166722697759851
+    },
+    {
+      "step": 700,
+      "golden_nll": 3.0140739836716386,
+      "proxy_kl": 0.9258535071392621
+    },
+    {
+      "step": 725,
+      "golden_nll": 3.014625601676652,
+      "proxy_kl": 0.9231507770954116
+    },
+    {
+      "step": 750,
+      "golden_nll": 3.009105421979351,
+      "proxy_kl": 0.9245157062360769
+    },
+    {
+      "step": 775,
+      "golden_nll": 3.0113293609270073,
+      "proxy_kl": 0.9160228158070957
+    },
+    {
+      "step": 800,
+      "golden_nll": 3.0073365329790005,
+      "proxy_kl": 0.9203943986310685
+    },
+    {
+      "step": 825,
+      "golden_nll": 3.0080409212909793,
+      "proxy_kl": 0.9201717763780695
+    },
+    {
+      "step": 850,
+      "golden_nll": 3.003095835005258,
+      "proxy_kl": 0.9130285867034145
+    },
+    {
+      "step": 875,
+      "golden_nll": 3.0061450434931003,
+      "proxy_kl": 0.9246340854327517
+    },
+    {
+      "step": 900,
+      "golden_nll": 3.0075161567729087,
+      "proxy_kl": 0.9205411627111237
+    },
+    {
+      "step": 925,
+      "golden_nll": 3.003547200592899,
+      "proxy_kl": 0.9210850426600204
+    },
+    {
+      "step": 950,
+      "golden_nll": 3.0109217842692653,
+      "proxy_kl": 0.9266669398858075
+    },
+    {
+      "step": 975,
+      "golden_nll": 3.008811420887988,
+      "proxy_kl": 0.9257558490876192
+    },
+    {
+      "step": 1000,
+      "golden_nll": 3.011333901067034,
+      "proxy_kl": 0.9285341377812869
+    },
+    {
+      "step": 1025,
+      "golden_nll": 3.00573315190069,
+      "proxy_kl": 0.9308456545887411
+    },
+    {
+      "step": 1050,
+      "golden_nll": 3.0065648983469853,
+      "proxy_kl": 0.9303195658631628
+    },
+    {
+      "step": 1075,
+      "golden_nll": 3.011909994390405,
+      "proxy_kl": 0.9360479051253424
+    },
+    {
+      "step": 1100,
+      "golden_nll": 3.010089488321895,
+      "proxy_kl": 0.9347213239531158
+    },
+    {
+      "step": 1125,
+      "golden_nll": 3.0096987119838943,
+      "proxy_kl": 0.936447617611967
+    },
+    {
+      "step": 1150,
+      "golden_nll": 3.0074798266444818,
+      "proxy_kl": 0.9335183197172372
+    },
+    {
+      "step": 1175,
+      "golden_nll": 3.010518180234046,
+      "proxy_kl": 0.9370718283122267
+    },
+    {
+      "step": 1200,
+      "golden_nll": 3.006701724114572,
+      "proxy_kl": 0.9364738247595311
+    },
+    {
+      "step": 1225,
+      "golden_nll": 3.0108817877976026,
+      "proxy_kl": 0.9416634795604337
+    },
+    {
+      "step": 1250,
+      "golden_nll": 3.0141258890026568,
+      "proxy_kl": 0.9468105615403729
+    },
+    {
+      "step": 1275,
+      "golden_nll": 3.01187628565235,
+      "proxy_kl": 0.9406674187804982
+    },
+    {
+      "step": 1300,
+      "golden_nll": 3.013879676488359,
+      "proxy_kl": 0.9470047245922234
+    },
+    {
+      "step": 1325,
+      "golden_nll": 3.0148987667682503,
+      "proxy_kl": 0.9471924265023396
+    },
+    {
+      "step": 1350,
+      "golden_nll": 3.012757622318579,
+      "proxy_kl": 0.9443002784835414
+    },
+    {
+      "step": 1375,
+      "golden_nll": 3.012407094682242,
+      "proxy_kl": 0.9466541316463326
+    },
+    {
+      "step": 1400,
+      "golden_nll": 3.014991037907719,
+      "proxy_kl": 0.9504916467188769
+    },
+    {
+      "step": 1425,
+      "golden_nll": 3.013697854690152,
+      "proxy_kl": 0.9471826796144254
+    },
+    {
+      "step": 1450,
+      "golden_nll": 3.012239929248764,
+      "proxy_kl": 0.9452450757677304
+    },
+    {
+      "step": 1475,
+      "golden_nll": 3.011650422694243,
+      "proxy_kl": 0.944598407589125
+    },
+    {
+      "step": 1500,
+      "golden_nll": 3.0115036968990987,
+      "proxy_kl": 0.9441987018586613
+    },
+    {
+      "step": 1520,
+      "golden_nll": 3.0112775456781327,
+      "proxy_kl": 0.9435794727009308
+    }
+  ],
+  "teacher_hacking": {
+    "n_checkpoints": 62,
+    "golden_key": "golden_nll",
+    "divergent_intervals": [
+      [
+        375,
+        400
+      ],
+      [
+        475,
+        500
+      ],
+      [
+        700,
+        725
+      ],
+      [
+        750,
+        775
+      ],
+      [
+        800,
+        825
+      ],
+      [
+        875,
+        900
+      ],
+      [
+        1025,
+        1050
+      ]
+    ],
+    "frac_divergent_intervals": 0.11475409836065574,
+    "best_golden_step": 850,
+    "proxy_change_after_best": 0.03055088599751632,
+    "golden_change_after_best": -0.008181710672874765,
+    "verdict": "no sustained proxy/golden divergence"
+  }
+}
